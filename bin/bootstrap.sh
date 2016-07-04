@@ -19,7 +19,7 @@
 # web page "http://www.fsf.org/licenses/lgpl.html".
 #############################################################################
 # Usage:
-# sudo ./boostrap.sh [git_branch (default=master)] [GitHub_username (default=OSGeo)]
+# sudo ./boostrap.sh [git_branch (default=master)] [GitHub_username (default=terranodo)]
 #############################################################################
 
 SCRIPT_DIR=/usr/local/share
