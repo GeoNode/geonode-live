@@ -198,7 +198,7 @@ cp "$GIT_DIR"/conf/chroot/casper.conf etc/casper.conf
 
 mv scripts/casper-bottom/25adduser scripts/casper-bottom/25adduser.ORIG
 cat scripts/casper-bottom/25adduser.ORIG \
-    "$GIT_DIR"/conf/chroot/conf/chroot/27osgeo_groups \
+    "$GIT_DIR"/conf/chroot/27osgeo_groups \
   > scripts/casper-bottom/25adduser
 rm scripts/casper-bottom/25adduser.ORIG
 chmod a+x scripts/casper-bottom/25adduser
