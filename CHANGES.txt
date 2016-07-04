@@ -1,0 +1,7 @@
+GeoNode Live Disc
+=================
+
+Version 0.1alpha1
+====================
+
+ * Bootstrap from OSGeoLive 10.0
