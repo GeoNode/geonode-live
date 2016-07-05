@@ -52,15 +52,6 @@ else
     GIT_USER="terranodo"
 fi
 
-run_installer()
-{
-  SCRIPT=$1
-  echo "===================================================================="
-  echo "Starting: $SCRIPT"
-  echo "===================================================================="
-  sh "$SCRIPT"
-}
-
 mount -t proc none /proc
 mount -t sysfs none /sys
 mount -t devpts none /dev/pts
@@ -101,12 +92,12 @@ cp /tmp/VERSION.txt /usr/local/share/geonode-live/
 cp /tmp/CHANGES.txt /usr/local/share/geonode-live/
 
 #######################################################
-# Replacement for main.sh
+# Start of main.sh
 #######################################################
 USER_NAME="user"
 export USER_NAME
 
-#./setup.sh "$BUILD_MODE"
+./main.sh "$ARCH" "$BUILD_MODE"
 
 #######################################################
 # End of main.sh
