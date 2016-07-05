@@ -686,7 +686,48 @@ do_hr
 #############################################################################
 cd "$BUILD_DIR"
 
+# tweak the lower taskbar
+LXPANEL="/usr/share/lxpanel/profile/Lubuntu/panels/panel"
+cp "$LXPANEL" "$LXPANEL.bak"
+cp "$BUILD_DIR"/../conf/desktop/panel "$LXPANEL"
+mkdir -p /etc/skel/.config/lxpanel/Lubuntu/panels
+cp "$LXPANEL" /etc/skel/.config/lxpanel/Lubuntu/panels/
 
+#### since KDE is removed we copy in some icons for the menus by hand
+cd /
+if [ ! -e /usr/share/icons/hicolor/48x48/apps/knetattach.png ] ; then
+   tar xf "$BUILD_DIR"/../conf/desktop/knetattach_icons.tar --no-same-owner
+fi
+if [ ! -e /usr/share/icons/hicolor/48x48/apps/ktip.png ] ; then
+   tar xf "$BUILD_DIR"/../conf/desktop/ktip_icons.tar --no-same-owner
+fi
+
+cp "$BUILD_DIR"/../conf/desktop/gnome-globe16blue.svg /usr/local/share/icons/
+cd "$BUILD_DIR"
+
+# Default password list on the desktop to be replaced by html help in the future.
+cp ../conf/desktop/passwords.txt "$USER_HOME/Desktop/"
+chown "$USER_NAME"."$USER_NAME" "$USER_HOME/Desktop/passwords.txt"
+
+# Setup the default desktop background image
+cp ../conf/desktop/geonode-desktop.png \
+    /usr/share/lubuntu/wallpapers/
+
+### set the desktop background, turn on keyboard layout select control
+sed -i -e 's|^bg=.*|bg=/usr/share/lubuntu/wallpapers/geonode-desktop.png|' \
+       -e 's|^keyboard=0$|keyboard=1|' \
+    /etc/xdg/lubuntu/lxdm/lxdm.conf
+
+sed -i -e 's|^wallpaper_mode=.*|wallpaper_mode=fit|' \
+       -e 's|^wallpaper=.*|wallpaper=/usr/share/lubuntu/wallpapers/geonode-desktop.png|' \
+       -e 's|^desktop_bg=.*|desktop_bg=#ffffff|' \
+       -e 's|^show_trash=.*|show_trash=0|' \
+   /etc/xdg/pcmanfm/lubuntu/pcmanfm.conf
+
+echo "desktop_folder_new_win=1" >> /etc/xdg/pcmanfm/lubuntu/pcmanfm.conf
+
+sed -i -e 's|^background=.*|background=/usr/share/lubuntu/wallpapers/geonode-desktop.png|' \
+   /etc/lightdm/lightdm-gtk-greeter.conf
 
 
 
