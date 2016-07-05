@@ -729,7 +729,51 @@ echo "desktop_folder_new_win=1" >> /etc/xdg/pcmanfm/lubuntu/pcmanfm.conf
 sed -i -e 's|^background=.*|background=/usr/share/lubuntu/wallpapers/geonode-desktop.png|' \
    /etc/lightdm/lightdm-gtk-greeter.conf
 
+apt-get install --yes gxmessage
 
+mkdir -p /usr/local/share/geonode-desktop
+
+cat << EOF > "/usr/local/share/geonode-desktop/welcome_message.desktop"
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Welcome message
+Comment=Live Demo welcome message
+Exec=/usr/local/share/geonode-desktop/welcome_message.sh
+Terminal=false
+StartupNotify=false
+Hidden=false
+EOF
+
+mkdir -p "$USER_HOME"/.config/autostart
+cp /usr/local/share/geonode-desktop/welcome_message.desktop \
+   "$USER_HOME"/.config/autostart/
+mkdir -p /etc/skel/.config/autostart
+cp /usr/local/share/geonode-desktop/welcome_message.desktop \
+   /etc/skel/.config/autostart/
+
+cp "$BUILD_DIR/../conf/desktop/welcome_message.sh" \
+   /usr/local/share/geonode-desktop/
+
+cp "$BUILD_DIR/../conf/desktop/welcome_message.txt" \
+   /usr/local/share/geonode-desktop/
+
+cp /usr/local/share/geonode-desktop/welcome_message.txt "$USER_HOME"/
+chown "$USER_NAME"."$USER_NAME" "$USER_HOME"/welcome_message.txt
+cp /usr/local/share/geonode-desktop/welcome_message.txt /etc/skel/
+
+# xdg nm-applet not loading by default, re-add it to user autostart
+cp /etc/xdg/autostart/nm-applet.desktop  /etc/skel/.config/autostart/
+
+# Tweak (non-default) theme so that window borders are wider so easier to grab.
+sed -i -e 's|^border.width: 1|border.width: 2|' \
+   /usr/share/themes/Mikachu/openbox-3/themerc
+
+# Long live the classic X11 keybindings
+cat << EOF > /etc/skel/.xinitrc
+setxkbmap -option keypad:pointerkeys
+setxkbmap -option terminate:ctrl_alt_bksp
+EOF
 
 #############################################################################
 do_hr
