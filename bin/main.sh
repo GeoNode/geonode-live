@@ -347,14 +347,14 @@ cat << EOF > /usr/share/applications/shp2pgsql-gui.desktop
 Type=Application
 Name=shp2pgsql
 Comment=Shapefile to PostGIS Import Tool
-Categories=Application;Geography;Geoscience;
+Categories=Application;Geography;Geoscience;Education;
 Exec=shp2pgsql-gui
 Icon=pgadmin3
 Terminal=false
 EOF
 
 cp -a /usr/share/applications/shp2pgsql-gui.desktop "$USER_HOME/Desktop/Geospatial/"
-chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/shp2pgsql-gui.desktop"
+chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/Geospatial/shp2pgsql-gui.desktop"
 
 
 
@@ -438,7 +438,7 @@ cat << EOF > /usr/share/applications/mapnik-start.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Start Mapnik & TileStache
+Name=Mapnik & TileStache Start
 Comment=Mapnik tile-serving using TileStache Server
 Categories=Application;Geography;Geoscience;Education;
 Exec=mapnik_start_tilestache.sh
@@ -535,7 +535,7 @@ cat << EOF > /usr/share/applications/mapproxy-start.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Start MapProxy
+Name=MapProxy Start
 Comment=MapProxy
 Categories=Application;Geography;Geoscience;Education;
 Exec=lxterminal -e mapproxy_start.sh
@@ -546,6 +546,21 @@ EOF
 
 cp -a /usr/share/applications/mapproxy-start.desktop "$USER_HOME/Desktop/Geospatial/"
 chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/mapproxy-start.desktop"
+
+cat << EOF > /usr/share/applications/mapproxy-demo.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=MapProxy demo
+Comment=MapProxy
+Categories=Application;Geography;Geoscience;Education;
+Exec=firefox "http://localhost:8011/demo/"
+Icon=gnome-globe
+Terminal=false
+EOF
+
+cp -a /usr/share/applications/mapproxy-demo.desktop "$USER_HOME/Desktop/Geospatial/"
+chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/mapproxy-demo.desktop"
 
 echo "Creating Configuration"
 cp ../conf/mapproxy/mapproxy.yaml "$MAPPROXY_DIR/mapproxy.yaml"
@@ -609,7 +624,7 @@ cat << EOF > /usr/share/applications/geoserver-start.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Start GeoServer
+Name=GeoServer Start
 Comment=GeoServer
 Categories=Application;Geography;Geoscience;Education;
 Exec=/usr/local/bin/geoserver_start.sh
@@ -625,7 +640,7 @@ cat << EOF > /usr/share/applications/geoserver-stop.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Stop GeoServer
+Name=GeoServer Stop
 Comment=GeoServer
 Categories=Application;Geography;Geoscience;Education;
 Exec=/usr/local/bin/geoserver_stop.sh
@@ -641,7 +656,7 @@ cat << EOF > /usr/share/applications/geoserver-admin.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Admin GeoServer
+Name=GeoServer Admin
 Comment=GeoServer
 Categories=Application;Geography;Geoscience;Education;
 Exec=firefox "http://localhost:8080/geoserver/"
