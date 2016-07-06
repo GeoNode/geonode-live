@@ -774,12 +774,13 @@ sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py syncdb --
 
 echo "Installing fixures..."
 cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/my_geonode/
-sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py loaddata --settings=my_geonode.settings --fixures="$USER_HOME"/my_geonode/fixtures.json
+sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py loaddata --settings=my_geonode.settings --fixtures="$USER_HOME"/my_geonode/fixtures.json
 
 echo "Creating DB store..."
 cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/my_geonode/
 sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/python "$USER_HOME"/my_geonode/create_db_store.py
 
+echo "Configuring uWSGI..."
 cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.ini
 service uwsgi-emperor restart
 
