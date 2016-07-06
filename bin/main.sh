@@ -926,4 +926,5 @@ mv /etc/gai.conf.orig /etc/gai.conf
 # stop PostgreSQL and Apache to avoid them thinking a crash happened next boot
 service postgresql stop
 service apache2 stop
-
+service nginx stop
+service uwsgi-emperor stop
