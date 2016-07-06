@@ -101,7 +101,7 @@ apt-get -q update
 
 # Install some useful stuff
 apt-get install --yes wget less zip unzip git \
-  patch vim nano screen iotop htop zenity
+  patch vim nano screen iotop htop zenity sed
 
 
 # Install virtualbox guest additions
@@ -751,8 +751,9 @@ sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py startproj
 cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/my_geonode/my_geonode/
 
 echo "Installing GeoNode..."
-#"$USER_HOME"/venvs/my_geonode/bin/pip install -e my_geonode
 "$USER_HOME"/venvs/my_geonode/bin/pip install -e ./src/geonode
+sed -e '27d' "$USER_HOME"/src/geonode-project/setup.py
+"$USER_HOME"/venvs/my_geonode/bin/pip install -e my_geonode
 
 echo "Creating www folders..."
 mkdir -p /var/www/my_geonode/static
