@@ -280,7 +280,7 @@ do_hr
 #############################################################################
 cd "$BUILD_DIR"
 
-apt-get install --yes uwsgi-emperor
+apt-get install --yes uwsgi-emperor uwsgi-plugin-python
 
 
 
@@ -736,7 +736,7 @@ cd "$USER_HOME"
 mkdir -p "$USER_HOME"/src
 cd src
 git clone https://github.com/GeoNode/geonode-project.git
-#git clone https://github.com/GeoNode/GeoNode.git
+git clone https://github.com/GeoNode/GeoNode.git geonode
 cd ..
 
 echo "Creating Virtualenv..."
@@ -751,7 +751,8 @@ sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py startproj
 cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/my_geonode/my_geonode/
 
 echo "Installing GeoNode..."
-"$USER_HOME"/venvs/my_geonode/bin/pip install -e my_geonode
+#"$USER_HOME"/venvs/my_geonode/bin/pip install -e my_geonode
+"$USER_HOME"/venvs/my_geonode/bin/pip install -e ./src/geonode
 
 echo "Creating www folders..."
 mkdir -p /var/www/my_geonode/static
