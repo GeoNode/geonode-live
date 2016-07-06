@@ -20,7 +20,7 @@ module = django.core.handlers.wsgi:WSGIHandler()
 
 virtualenv = /home/user/venvs/%n
 vacuum = true
-env = DJANGO_SETTINGS_MODULE=geonode.settings
+env = DJANGO_SETTINGS_MODULE=live_geonode.settings
 pidfile = /tmp/%n.pid
 ;harakiri = 20 # respawn processes taking more than 20 seconds
 max-requests = 5000 # respawn processes after serving 5000 requests
