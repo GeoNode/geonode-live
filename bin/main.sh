@@ -702,6 +702,7 @@ if [ ! -e /usr/share/icons/hicolor/48x48/apps/ktip.png ] ; then
    tar xf "$BUILD_DIR"/../conf/desktop/ktip_icons.tar --no-same-owner
 fi
 
+mkdir -p /usr/local/share/icons
 cp "$BUILD_DIR"/../conf/desktop/gnome-globe16blue.svg /usr/local/share/icons/
 cd "$BUILD_DIR"
 
