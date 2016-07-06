@@ -195,16 +195,27 @@ cd "$BUILD_DIR"
 apt-get -q update
 
 # Install C development packages
-apt-get install --yes build-essential pkg-config libxml2-dev libxslt-dev
+apt-get install --yes build-essential pkg-config libxml2-dev libxslt-dev \
+    libpq-dev postgresql-client-common postgresql-client gettext zlib1g-dev \
+    libjpeg-dev libpng-dev
 
 # Install OSGeo C stack libraries
-apt-get install --yes libgdal20 gdal-bin proj-bin libgeos-c1v5 geotiff-bin
+apt-get install --yes libgdal20 gdal-bin proj-bin libgeos-c1v5 geotiff-bin \
+    libgeos-dev libproj-dev
 
 # Install Python development packages
-apt-get install --yes python-all-dev python-virtualenv
+apt-get install --yes python-all-dev python-virtualenv python-pip \
+    python-imaging python-lxml python-pyproj python-shapely python-nose \
+    python-httplib2 python-psycopg2 python-software-properties
 
 # Install Python GDAL packages
 apt-get install --yes python-gdal python-rasterio python-fiona fiona rasterio
+
+# Install Ansible
+apt-get install --yes ansible
+
+# Install Docker
+apt-get install --yes docker docker-compose
 
 
 
@@ -258,6 +269,22 @@ apt-get install --yes nginx
 cp ../conf/nginx/nginx.conf /etc/nginx/sites-available/default
 
 service nginx restart
+
+
+
+#############################################################################
+do_hr
+echo "Installing uwsgi"
+do_hr
+#############################################################################
+cd "$BUILD_DIR"
+
+apt-get install --yes uwsgi-emperor
+cp ../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.skel
+
+service uwsgi-emperor restart
+
+
 
 #############################################################################
 do_hr
