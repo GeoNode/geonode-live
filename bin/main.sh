@@ -767,7 +767,7 @@ sudo -u $USER_NAME psql my_geonode -c 'create extension postgis;'
 
 echo "Collecting static files..."
 mkdir -p "$USER_HOME"/venvs/my_geonode/local/lib/python2.7/site-packages/geonode/static
-sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py collectstatic --noinput --settings=my_geonode.settings --verbosity=0
+"$USER_HOME"/venvs/my_geonode/bin/django-admin.py collectstatic --noinput --settings=my_geonode.settings --verbosity=0
 
 echo "Sync database..."
 sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py syncdb --noinput --settings=my_geonode.settings
