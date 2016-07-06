@@ -239,7 +239,11 @@ cd "$BUILD_DIR"
 apt-get install --yes apache2
 adduser "$USER_NAME" www-data
 
+# Switch apache port not to conflict with nginx
+sed -i -e 's|Listen 80|Listen 81|' \
+   /etc/apache2/ports.conf
 
+service apache2 restart
 
 #############################################################################
 do_hr
