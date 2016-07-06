@@ -581,10 +581,25 @@ cd "$BUILD_DIR"
 TOMCAT_USER_NAME="tomcat8"
 TOMCAT_INSTALL_DIR="/var/lib/${TOMCAT_USER_NAME}/webapps"
 
-
 wget -c --progress=dot:mega \
    -O "$TOMCAT_INSTALL_DIR"/geoserver.war \
    "http://build.geonode.org/geoserver/latest/geoserver.war"
+
+service tomcat8 start
+sleep 60
+service tomcat8 stop
+
+# Add GeoNode plugins
+cd /tmp
+wget -c --progress=dot:mega \
+   "http://build.geonode.org/geoserver/latest/geonode-geoserver-ext-2.7.4-geoserver-plugin.zip"
+unzip geonode-geoserver-ext-2.7.4-geoserver-plugin.zip
+rm /tmp/geonode-geoserver-ext-2.7.4-geoserver-plugin.zip
+mv /tmp/geonode-geoserver-ext-2.7.4.jar "/var/lib/${TOMCAT_USER_NAME}/webapps/geoserver/WEB-INF/lib/"
+mv /tmp/gt-process-13.4.jar "/var/lib/${TOMCAT_USER_NAME}/webapps/geoserver/WEB-INF/lib/"
+cd "$BUILD_DIR"
+
+#TODO: Add sample data
 
 # Create startup script for GeoServer
 if [ ! -e /usr/local/bin/geoserver_start.sh ] ; then
@@ -837,7 +852,7 @@ fi
 
 # Start tomcat to ensure all applications are deployed
 service tomcat8 start
-sleep 120
+sleep 60
 service tomcat8 stop
 
 # Disable auto-deploy to prevent applications to get removed after removing war files
