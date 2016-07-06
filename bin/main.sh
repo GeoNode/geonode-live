@@ -191,7 +191,7 @@ echo "Installing C/Python Development files"
 do_hr
 #############################################################################
 cd "$BUILD_DIR"
-
+apt-get clean
 apt-get -q update
 
 # Install C development packages
