@@ -245,6 +245,19 @@ sed -i -e 's|Listen 80|Listen 81|' \
 
 service apache2 restart
 
+
+
+#############################################################################
+do_hr
+echo "Installing nginx"
+do_hr
+#############################################################################
+cd "$BUILD_DIR"
+
+apt-get install --yes nginx
+cp ../conf/nginx/nginx.conf /etc/nginx/sites-available/default
+
+
 #############################################################################
 do_hr
 echo "Installing Tomcat"
