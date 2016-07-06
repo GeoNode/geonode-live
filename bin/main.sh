@@ -191,6 +191,7 @@ echo "Installing C/Python Development files"
 do_hr
 #############################################################################
 cd "$BUILD_DIR"
+
 apt-get clean
 apt-get -q update
 
@@ -634,15 +635,15 @@ service tomcat8 start
 sleep 60
 service tomcat8 stop
 
-# Add GeoNode plugins
-cd /tmp
-wget -c --progress=dot:mega \
-   "http://build.geonode.org/geoserver/latest/geonode-geoserver-ext-2.7.4-geoserver-plugin.zip"
-unzip geonode-geoserver-ext-2.7.4-geoserver-plugin.zip
-rm /tmp/geonode-geoserver-ext-2.7.4-geoserver-plugin.zip
-mv /tmp/geonode-geoserver-ext-2.7.4.jar "/var/lib/${TOMCAT_USER_NAME}/webapps/geoserver/WEB-INF/lib/"
-mv /tmp/gt-process-13.4.jar "/var/lib/${TOMCAT_USER_NAME}/webapps/geoserver/WEB-INF/lib/"
-cd "$BUILD_DIR"
+# # Add GeoNode plugins
+# cd /tmp
+# wget -c --progress=dot:mega \
+#    "http://build.geonode.org/geoserver/latest/geonode-geoserver-ext-2.7.4-geoserver-plugin.zip"
+# unzip geonode-geoserver-ext-2.7.4-geoserver-plugin.zip
+# rm /tmp/geonode-geoserver-ext-2.7.4-geoserver-plugin.zip
+# mv /tmp/geonode-geoserver-ext-2.7.4.jar "/var/lib/${TOMCAT_USER_NAME}/webapps/geoserver/WEB-INF/lib/"
+# mv /tmp/gt-process-13.4.jar "/var/lib/${TOMCAT_USER_NAME}/webapps/geoserver/WEB-INF/lib/"
+# cd "$BUILD_DIR"
 
 #TODO: Add sample data
 
