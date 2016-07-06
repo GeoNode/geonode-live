@@ -205,7 +205,7 @@ apt-get install --yes libgdal20 gdal-bin proj-bin libgeos-c1v5 geotiff-bin \
     libgeos-dev libproj-dev
 
 # Install Python development packages
-apt-get install --yes python-all-dev python-virtualenv python-pip \
+apt-get install --yes python-all-dev python-virtualenv virtualenv python-pip \
     python-imaging python-lxml python-pyproj python-shapely python-nose \
     python-httplib2 python-psycopg2 python-software-properties
 
@@ -281,9 +281,6 @@ do_hr
 cd "$BUILD_DIR"
 
 apt-get install --yes uwsgi-emperor
-cp ../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.skel
-
-service uwsgi-emperor restart
 
 
 
@@ -632,8 +629,7 @@ wget -c --progress=dot:mega \
    "http://build.geonode.org/geoserver/latest/geoserver.war"
 
 service tomcat8 start
-sleep 60
-service tomcat8 stop
+sleep 30
 
 # # Add GeoNode plugins
 # cd /tmp
@@ -737,6 +733,40 @@ do_hr
 #############################################################################
 cd "$USER_HOME"
 
+mkdir -p "$USER_HOME"/src
+cd src
+git clone https://github.com/GeoNode/geonode-project.git
+#git clone https://github.com/GeoNode/GeoNode.git
+cd ..
+
+mkdir -p "$USER_HOME"/venvs
+virtualenv --system-site-packages "$USER_HOME"/venvs/my_geonode
+source ./venvs/my_geonode/bin/activate
+pip install Django==1.8.12
+django-admin.py startproject my_geonode --template=./src/geonode-project
+cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/my_geonode/my_geonode/
+pip install -e my_geonode
+
+mkdir -p /var/www/my_geonode/static
+mkdir -p /var/www/my_geonode/uploaded/layers
+mkdir -p /var/www/my_geonode/uploaded/thumbs
+chown -R www-data:www-data /var/www/my_geonode
+
+sudo -u $USER_NAME createdb -E UTF8 my_geonode_app
+sudo -u $USER_NAME psql my_geonode_app -c 'create extension postgis;'
+sudo -u $USER_NAME createdb -E UTF8 my_geonode
+sudo -u $USER_NAME psql my_geonode -c 'create extension postgis;'
+
+sudo -u "$USER_NAME" django-admin.py collectstatic --noinput --settings=my_geonode.settings --verbosity=0
+sudo -u "$USER_NAME" django-admin.py syncdb --noinput --settings=my_geonode.settings
+cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/my_geonode/
+sudo -u "$USER_NAME" django-admin.py loaddata --noinput --settings=my_geonode.settings --fixures="$USER_HOME"/my_geonode/fixtures.json
+cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/my_geonode/
+sudo -u "$USER_NAME" python "$USER_HOME"/my_geonode/create_db_store.py
+deactivate
+
+cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.ini
+service uwsgi-emperor restart
 
 
 
@@ -897,8 +927,8 @@ if [ -e /etc/ssh/sshd_config ] ; then
 fi
 
 # Start tomcat to ensure all applications are deployed
-service tomcat8 start
-sleep 60
+#service tomcat8 start
+#sleep 60
 service tomcat8 stop
 
 # Disable auto-deploy to prevent applications to get removed after removing war files
