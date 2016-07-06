@@ -7,7 +7,7 @@ SITEURL = "my_geonode"
 DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'my_geonode',
+         'NAME': 'my_geonode_app',
          'USER': 'user',
          'PASSWORD': 'user',
      },
