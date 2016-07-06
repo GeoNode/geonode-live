@@ -257,6 +257,7 @@ cd "$BUILD_DIR"
 apt-get install --yes nginx
 cp ../conf/nginx/nginx.conf /etc/nginx/sites-available/default
 
+service nginx restart
 
 #############################################################################
 do_hr
@@ -622,7 +623,7 @@ cd "$BUILD_DIR"
 if [ ! -e /usr/local/bin/geoserver_start.sh ] ; then
     cat << EOF > /usr/local/bin/geoserver_start.sh
     #!/bin/bash
-    STAT=\`sudo service "$TOMCAT_USER_NAME" status | grep pid\`
+    STAT=\`sudo service "$TOMCAT_USER_NAME" status | grep "(running)"\`
     if [ -z "\$STAT" ] ; then
         sudo service "$TOMCAT_USER_NAME" start
         (sleep 2; echo "25"; sleep 2; echo "50"; sleep 2; echo "75"; sleep 2; echo "100") \
@@ -636,7 +637,7 @@ fi
 if [ ! -e /usr/local/bin/geoserver_stop.sh ] ; then
     cat << EOF > /usr/local/bin/geoserver_stop.sh
     #!/bin/bash
-    STAT=\`sudo service "$TOMCAT_USER_NAME" status | grep pid\`
+    STAT=\`sudo service "$TOMCAT_USER_NAME" status | grep "(running)"\`
     if [ -n "\$STAT" ] ; then
         sudo service "$TOMCAT_USER_NAME" stop
         zenity --info --text "GeoServer stopped"
