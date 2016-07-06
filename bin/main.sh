@@ -739,27 +739,44 @@ git clone https://github.com/GeoNode/geonode-project.git
 #git clone https://github.com/GeoNode/GeoNode.git
 cd ..
 
+echo "Creating Virtualenv..."
 mkdir -p "$USER_HOME"/venvs
 virtualenv --system-site-packages "$USER_HOME"/venvs/my_geonode
+
+echo "Installing Django..."
 "$USER_HOME"/venvs/my_geonode/bin/pip install Django==1.8.12
-"$USER_HOME"/venvs/my_geonode/bin/django-admin.py startproject my_geonode --template="$USER_HOME"/src/geonode-project
+
+echo "Creating GeoNode template project..."
+sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py startproject my_geonode --template="$USER_HOME"/src/geonode-project
 cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/my_geonode/my_geonode/
+
+echo "Installing GeoNode..."
 "$USER_HOME"/venvs/my_geonode/bin/pip install -e my_geonode
 
+echo "Creating www folders..."
 mkdir -p /var/www/my_geonode/static
 mkdir -p /var/www/my_geonode/uploaded/layers
 mkdir -p /var/www/my_geonode/uploaded/thumbs
 chown -R www-data:www-data /var/www/my_geonode
 
+echo "Creating GeoNode databases..."
 sudo -u $USER_NAME createdb -E UTF8 my_geonode_app
 sudo -u $USER_NAME psql my_geonode_app -c 'create extension postgis;'
 sudo -u $USER_NAME createdb -E UTF8 my_geonode
 sudo -u $USER_NAME psql my_geonode -c 'create extension postgis;'
 
+echo "Collecting static files..."
+mkdir -p "$USER_HOME"/venvs/my_geonode/local/lib/python2.7/site-packages/geonode/static
 sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py collectstatic --noinput --settings=my_geonode.settings --verbosity=0
+
+echo "Sync database..."
 sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py syncdb --noinput --settings=my_geonode.settings
+
+echo "Installing fixures..."
 cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/my_geonode/
-sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py loaddata --noinput --settings=my_geonode.settings --fixures="$USER_HOME"/my_geonode/fixtures.json
+sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py loaddata --settings=my_geonode.settings --fixures="$USER_HOME"/my_geonode/fixtures.json
+
+echo "Creating DB store..."
 cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/my_geonode/
 sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/python "$USER_HOME"/my_geonode/create_db_store.py
 
