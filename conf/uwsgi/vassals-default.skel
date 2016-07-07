@@ -14,13 +14,14 @@ vacuum = true
 logto = /var/log/nginx/uwsgi-%n.log
 
 chdir = /home/user/%n
-module = django.core.handlers.wsgi:WSGIHandler()
+module = geonode_live.wsgi
 
 ;enable-threads = true
 
 virtualenv = /home/user/.virtualenvs/%n
 vacuum = true
-env = DJANGO_SETTINGS_MODULE=geonode_live.settings
+;env = DJANGO_SETTINGS_MODULE=geonode_live.settings
 pidfile = /tmp/%n.pid
 ;harakiri = 20 # respawn processes taking more than 20 seconds
 max-requests = 5000 # respawn processes after serving 5000 requests
+plugins = python,logfile
