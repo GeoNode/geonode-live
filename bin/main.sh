@@ -769,10 +769,12 @@ sudo -u $USER_NAME psql geonode_live -c 'create extension postgis;'
 
 echo "Collecting static files..."
 mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
-"$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py collectstatic --noinput --settings=geonode_live.settings --verbosity=0
+"$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py makemigrations --noinput
+"$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py migrate --noinput
+"$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py collectstatic --noinput
 
 echo "Sync database..."
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py syncdb --noinput --settings=geonode_live.settings
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py syncdb --noinput
 
 echo "Installing fixures..."
 cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
