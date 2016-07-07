@@ -207,7 +207,7 @@ apt-get install --yes libgdal20 gdal-bin proj-bin libgeos-c1v5 geotiff-bin \
 # Install Python development packages
 apt-get install --yes python-all-dev python-virtualenv virtualenv python-pip \
     python-imaging python-lxml python-pyproj python-shapely python-nose \
-    python-httplib2 python-psycopg2 python-software-properties
+    python-httplib2 python-psycopg2 python-software-properties virtualenvwrapper
 
 # Install Python GDAL packages
 apt-get install --yes python-gdal python-rasterio python-fiona fiona rasterio
@@ -733,54 +733,54 @@ do_hr
 #############################################################################
 cd "$USER_HOME"
 
-mkdir -p "$USER_HOME"/src
-cd src
-git clone https://github.com/GeoNode/geonode-project.git
 git clone https://github.com/GeoNode/GeoNode.git geonode
-cd ..
 
 echo "Creating Virtualenv..."
-mkdir -p "$USER_HOME"/venvs
-virtualenv --system-site-packages "$USER_HOME"/venvs/my_geonode
+mkdir -p "$USER_HOME"/.virtualenvs
+virtualenv --system-site-packages "$USER_HOME"/.virtualenvs/geonode_live
 
 echo "Installing Django..."
-"$USER_HOME"/venvs/my_geonode/bin/pip install Django==1.8.12
+"$USER_HOME"/.virtualenvs/geonode_live/bin/pip install Django==1.8.7
 
 echo "Creating GeoNode template project..."
-sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py startproject my_geonode --template="$USER_HOME"/src/geonode-project
-cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/my_geonode/my_geonode/
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py startproject geonode_live --template=https://github.com/GeoNode/geonode-project/archive/master.zip -epy,rst,yml -n Vagrantfile
+cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/geonode_live/geonode_live/
 
 echo "Installing GeoNode..."
-"$USER_HOME"/venvs/my_geonode/bin/pip install -e ./src/geonode
-sed -e '27d' "$USER_HOME"/src/geonode-project/setup.py
-"$USER_HOME"/venvs/my_geonode/bin/pip install -e my_geonode
+cd "$USER_HOME"/geonode
+"$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
+cd ..
+sed -e '27d' "$USER_HOME"/geonode_live/setup.py
+cd "$USER_HOME"/geonode_live
+"$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
+cd ..
 
 echo "Creating www folders..."
-mkdir -p /var/www/my_geonode/static
-mkdir -p /var/www/my_geonode/uploaded/layers
-mkdir -p /var/www/my_geonode/uploaded/thumbs
-chown -R www-data:www-data /var/www/my_geonode
+mkdir -p /var/www/geonode_live/static
+mkdir -p /var/www/geonode_live/uploaded/layers
+mkdir -p /var/www/geonode_live/uploaded/thumbs
+chown -R www-data:www-data /var/www/geonode_live
 
 echo "Creating GeoNode databases..."
-sudo -u $USER_NAME createdb -E UTF8 my_geonode_app
-sudo -u $USER_NAME psql my_geonode_app -c 'create extension postgis;'
-sudo -u $USER_NAME createdb -E UTF8 my_geonode
-sudo -u $USER_NAME psql my_geonode -c 'create extension postgis;'
+sudo -u $USER_NAME createdb -E UTF8 geonode_live_app
+sudo -u $USER_NAME psql geonode_live_app -c 'create extension postgis;'
+sudo -u $USER_NAME createdb -E UTF8 geonode_live
+sudo -u $USER_NAME psql geonode_live -c 'create extension postgis;'
 
 echo "Collecting static files..."
-mkdir -p "$USER_HOME"/venvs/my_geonode/local/lib/python2.7/site-packages/geonode/static
-"$USER_HOME"/venvs/my_geonode/bin/django-admin.py collectstatic --noinput --settings=my_geonode.settings --verbosity=0
+mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
+"$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py collectstatic --noinput --settings=geonode_live.settings --verbosity=0
 
 echo "Sync database..."
-sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py syncdb --noinput --settings=my_geonode.settings
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py syncdb --noinput --settings=geonode_live.settings
 
 echo "Installing fixures..."
-cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/my_geonode/
-sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/django-admin.py loaddata --settings=my_geonode.settings "$USER_HOME"/my_geonode/fixtures.json
+cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py loaddata --settings=geonode_live.settings "$USER_HOME"/geonode_live/fixtures.json
 
 echo "Creating DB store..."
-cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/my_geonode/
-sudo -u "$USER_NAME" "$USER_HOME"/venvs/my_geonode/bin/python "$USER_HOME"/my_geonode/create_db_store.py
+cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/geonode_live/
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/create_db_store.py
 
 echo "Configuring uWSGI..."
 cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.ini
@@ -971,6 +971,9 @@ chmod 440 /etc/sudoers.d/tomcat
 # Switching to default IPv6
 rm /etc/gai.conf
 mv /etc/gai.conf.orig /etc/gai.conf
+
+# Remove symlink
+rm -rf "$USER_HOME"/geonode-live
 
 # stop PostgreSQL and Apache to avoid them thinking a crash happened next boot
 service postgresql stop

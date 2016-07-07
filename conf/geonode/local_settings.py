@@ -2,19 +2,19 @@ import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-SITEURL = "my_geonode"
+SITEURL = "geonode_live"
 
 DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'my_geonode_app',
+         'NAME': 'geonode_live_app',
          'USER': 'user',
          'PASSWORD': 'user',
      },
     # vector datastore for uploads
-    'my_geonode' : {
+    'geonode_live' : {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'my_geonode',
+        'NAME': 'geonode_live',
         'USER' : 'user',
         'PASSWORD' : 'user',
         'HOST' : 'localhost',
@@ -39,7 +39,7 @@ OGC_SERVER = {
         'WPS_ENABLED' : False,
         'LOG_FILE': '%s/geoserver/data/logs/geoserver.log' % os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir)),
         # Set to name of database in DATABASES dictionary to enable
-        'DATASTORE': 'my_geonode', #'datastore',
+        'DATASTORE': 'geonode_live', #'datastore',
     }
 }
 
@@ -50,5 +50,5 @@ CATALOGUE = {
     }
 }
 
-MEDIA_ROOT = "/var/www/my_geonode/uploaded"
-STATIC_ROOT = "/var/www/my_geonode/static"
+MEDIA_ROOT = "/var/www/geonode_live/uploaded"
+STATIC_ROOT = "/var/www/geonode_live/static"
