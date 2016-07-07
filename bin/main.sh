@@ -733,14 +733,14 @@ do_hr
 #############################################################################
 cd "$USER_HOME"
 
-git clone https://github.com/GeoNode/GeoNode.git geonode
+sudo -u "$USER_NAME" git clone https://github.com/GeoNode/GeoNode.git geonode
 
 echo "Creating Virtualenv..."
-mkdir -p "$USER_HOME"/.virtualenvs
-virtualenv --system-site-packages "$USER_HOME"/.virtualenvs/geonode_live
+sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs
+sudo -u "$USER_NAME" virtualenv --system-site-packages "$USER_HOME"/.virtualenvs/geonode_live
 
 echo "Installing Django..."
-"$USER_HOME"/.virtualenvs/geonode_live/bin/pip install Django==1.8.7
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install Django==1.8.7
 
 echo "Creating GeoNode template project..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py startproject geonode_live --template=https://github.com/GeoNode/geonode-project/archive/master.zip -epy,rst,yml -n Vagrantfile
@@ -748,11 +748,11 @@ cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/geonode_live/geon
 
 echo "Installing GeoNode..."
 cd "$USER_HOME"/geonode
-"$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
-sed -i -e '25,28d' "$USER_HOME"/geonode_live/setup.py
+sudo -u "$USER_NAME" sed -i -e '25,28d' "$USER_HOME"/geonode_live/setup.py
 cd "$USER_HOME"/geonode_live
-"$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
 
 echo "Creating www folders..."
@@ -760,6 +760,7 @@ mkdir -p /var/www/geonode_live/static
 mkdir -p /var/www/geonode_live/uploaded/layers
 mkdir -p /var/www/geonode_live/uploaded/thumbs
 chown -R www-data:www-data /var/www/geonode_live
+chmod -R 777 /var/www/geonode_live
 
 echo "Creating GeoNode databases..."
 sudo -u $USER_NAME createdb -E UTF8 geonode_live_app
@@ -767,22 +768,25 @@ sudo -u $USER_NAME psql geonode_live_app -c 'create extension postgis;'
 sudo -u $USER_NAME createdb -E UTF8 geonode_live
 sudo -u $USER_NAME psql geonode_live -c 'create extension postgis;'
 
+echo "Making migrations..."
+sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
+cd "$USER_HOME"/geonode_live
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py makemigrations --noinput
+echo "Migrate..."
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate --noinput
 echo "Collecting static files..."
-mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py makemigrations --noinput
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py migrate --noinput
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py collectstatic --noinput
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py collectstatic --noinput
 
-echo "Sync database..."
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py syncdb --noinput
+#echo "Sync database..."
+#sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py syncdb --noinput
 
 echo "Installing fixures..."
-cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py loaddata "$USER_HOME"/geonode_live/fixtures.json
+sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py loaddata fixtures.json
 
 echo "Creating DB store..."
-cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/geonode_live/
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/create_db_store.py
+sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/geonode_live/
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python create_db_store.py
 
 echo "Configuring uWSGI..."
 cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.ini
