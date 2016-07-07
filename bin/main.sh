@@ -768,9 +768,27 @@ sudo -u $USER_NAME psql geonode_live_app -c 'create extension postgis;'
 sudo -u $USER_NAME createdb -E UTF8 geonode_live
 sudo -u $USER_NAME psql geonode_live -c 'create extension postgis;'
 
-
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
 cd "$USER_HOME"/geonode_live
+
+echo "Applying migrations..."
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate layers
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate documents
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate actstream
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate people
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate admin
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate guardian
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate sessions
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate sites
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate auth
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate tastypie
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate maps
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate contenttypes
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate base
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate upload
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate groups
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate services
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate taggit
 
 echo "Sync database..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py syncdb --noinput
@@ -780,8 +798,6 @@ echo "Migrate..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate --noinput
 echo "Collecting static files..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py collectstatic --noinput
-
-
 
 echo "Installing fixures..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
@@ -794,6 +810,17 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python create_db
 echo "Configuring uWSGI..."
 cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.ini
 service uwsgi-emperor restart
+
+
+
+#############################################################################
+do_hr
+echo "Installing Tegola"
+do_hr
+#############################################################################
+cd "$USER_HOME"
+
+
 
 
 
