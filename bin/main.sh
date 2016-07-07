@@ -768,17 +768,20 @@ sudo -u $USER_NAME psql geonode_live_app -c 'create extension postgis;'
 sudo -u $USER_NAME createdb -E UTF8 geonode_live
 sudo -u $USER_NAME psql geonode_live -c 'create extension postgis;'
 
-echo "Making migrations..."
+
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
 cd "$USER_HOME"/geonode_live
+
+echo "Sync database..."
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py syncdb --noinput
+echo "Making migrations..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py makemigrations --noinput
 echo "Migrate..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate --noinput
 echo "Collecting static files..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py collectstatic --noinput
 
-#echo "Sync database..."
-#sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py syncdb --noinput
+
 
 echo "Installing fixures..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
