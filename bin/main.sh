@@ -421,7 +421,7 @@ ln -s /usr/local/share/osm/"$CITY.osm.bz2" /usr/local/share/data/osm/
 ln -s /usr/local/share/data/osm/"$CITY.osm.bz2" \
    /usr/local/share/data/osm/feature_city.osm.bz2
 
-apt-get install --yes --no-install-recommends osm2pgsql
+apt-get install --yes --no-install-recommends osm2pgsql osmosis
 
 sudo -u $USER_NAME createdb osm_local
 sudo -u $USER_NAME psql osm_local -c 'create extension postgis;'
@@ -811,6 +811,27 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python create_db
 echo "Configuring uWSGI..."
 cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.ini
 service uwsgi-emperor restart
+
+# Install desktop icon
+echo "Installing GeoNode icon"
+cp "$BUILD_DIR"/../conf/geonode/geonode.png /usr/share/icons/
+
+## start icon
+cat << EOF > /usr/share/applications/geonode-start.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=GeoNode Start
+Comment=GeoNode
+Categories=Application;Geography;Geoscience;Education;
+Exec=cd /home/user && uwsgi --plugin http,python --http :8000 --module geonode_live.wsgi --virtualenv /home/user/.virtualenvs/geonode_live
+Icon=/usr/share/icons/geonode.png
+Terminal=true
+EOF
+
+cp -a /usr/share/applications/geonode-start.desktop "$USER_HOME/Desktop/Geospatial/"
+chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/Geospatial/geonode-start.desktop"
+
 
 
 
