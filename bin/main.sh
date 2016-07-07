@@ -269,7 +269,7 @@ cd "$BUILD_DIR"
 apt-get install --yes nginx
 cp ../conf/nginx/nginx.conf /etc/nginx/sites-available/default
 
-service nginx restart
+service nginx stop
 
 
 
@@ -282,6 +282,7 @@ cd "$BUILD_DIR"
 
 apt-get install --yes uwsgi-emperor uwsgi-plugin-python
 
+service uwsgi-emperor stop
 
 
 #############################################################################
@@ -344,6 +345,8 @@ echo "------------------------------------"
 apt-get install --yes postgresql-"$PG_VERSION" pgadmin3
 
 ### config ###
+cp "$BUILD_DIR"/../conf/postgresql/pg_hba.conf /etc/postgresql/"$PG_VERSION"/main/pg_hba.conf
+
 service postgresql start
 #set default user/password to the system user for easy login
 sudo -u postgres createuser --superuser $USER_NAME
@@ -809,28 +812,28 @@ sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_H
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python create_db_store.py
 
 echo "Configuring uWSGI..."
-cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/vassals-default.ini
-service uwsgi-emperor restart
+cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/geonode_live.ini
+#service uwsgi-emperor restart
 
 # Install desktop icon
 echo "Installing GeoNode icon"
 cp "$BUILD_DIR"/../conf/geonode/geonode.png /usr/share/icons/
 
-## start launcher
-cat << EOF > /usr/share/applications/geonode-start.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=GeoNode Start
-Comment=GeoNode
-Categories=Application;Geography;Geoscience;Education;
-Exec=cd /home/user && uwsgi --plugin http,python --http :8000 --module geonode_live.wsgi --virtualenv /home/user/.virtualenvs/geonode_live
-Icon=/usr/share/icons/geonode.png
-Terminal=true
-EOF
+# ## start launcher
+# cat << EOF > /usr/share/applications/geonode-start.desktop
+# [Desktop Entry]
+# Type=Application
+# Encoding=UTF-8
+# Name=GeoNode Start
+# Comment=GeoNode
+# Categories=Application;Geography;Geoscience;Education;
+# Exec=cd /home/user && uwsgi --plugin http,python --http :8000 --module geonode_live.wsgi --virtualenv /home/user/.virtualenvs/geonode_live
+# Icon=/usr/share/icons/geonode.png
+# Terminal=true
+# EOF
 
-cp -a /usr/share/applications/geonode-start.desktop "$USER_HOME/Desktop/Geospatial/"
-chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/Geospatial/geonode-start.desktop"
+# cp -a /usr/share/applications/geonode-start.desktop "$USER_HOME/Desktop/Geospatial/"
+# chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/Geospatial/geonode-start.desktop"
 
 # home launcher
 cat << EOF > /usr/share/applications/geonode-admin.desktop
