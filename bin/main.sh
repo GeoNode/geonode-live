@@ -750,7 +750,7 @@ echo "Installing GeoNode..."
 cd "$USER_HOME"/geonode
 "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
-sed -i -e '27d' "$USER_HOME"/geonode_live/setup.py
+sed -i -e '25,28d' "$USER_HOME"/geonode_live/setup.py
 cd "$USER_HOME"/geonode_live
 "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
