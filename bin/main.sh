@@ -750,7 +750,7 @@ echo "Installing GeoNode..."
 cd "$USER_HOME"/geonode
 "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
-sed -e '27d' "$USER_HOME"/geonode_live/setup.py
+sed -i -e '27d' "$USER_HOME"/geonode_live/setup.py
 cd "$USER_HOME"/geonode_live
 "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
@@ -974,6 +974,7 @@ mv /etc/gai.conf.orig /etc/gai.conf
 
 # Remove symlink
 rm -rf "$USER_HOME"/geonode-live
+rm -rf /etc/skel/geonode-live
 
 # stop PostgreSQL and Apache to avoid them thinking a crash happened next boot
 service postgresql stop
