@@ -778,7 +778,7 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HO
 
 echo "Installing fixures..."
 cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py loaddata --settings=geonode_live.settings "$USER_HOME"/geonode_live/fixtures.json
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python "$USER_HOME"/geonode_live/manage.py loaddata "$USER_HOME"/geonode_live/fixtures.json
 
 echo "Creating DB store..."
 cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/geonode_live/
