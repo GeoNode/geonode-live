@@ -816,7 +816,7 @@ service uwsgi-emperor restart
 echo "Installing GeoNode icon"
 cp "$BUILD_DIR"/../conf/geonode/geonode.png /usr/share/icons/
 
-## start icon
+## start launcher
 cat << EOF > /usr/share/applications/geonode-start.desktop
 [Desktop Entry]
 Type=Application
@@ -832,6 +832,22 @@ EOF
 cp -a /usr/share/applications/geonode-start.desktop "$USER_HOME/Desktop/Geospatial/"
 chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/Geospatial/geonode-start.desktop"
 
+# home launcher
+cat << EOF > /usr/share/applications/geonode-admin.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=GeoNode Home
+Comment=GeoNode Home
+Categories=Application;Geography;Geoscience;Education;
+Exec=firefox http://localhost:8000/
+Icon=/usr/share/icons/geonode.png
+Terminal=false
+StartupNotify=false
+EOF
+
+cp /usr/share/applications/geonode-admin.desktop "$USER_HOME/Desktop/Geospatial/"
+chown -R $USER_NAME.$USER_NAME "$USER_HOME/Desktop/Geospatial/geonode-admin.desktop"
 
 
 
