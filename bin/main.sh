@@ -894,11 +894,7 @@ echo "GOPATH=/home/user/config" >> /etc/profile.d/path.sh
 sudo -u "$USER_NAME" go get -d github.com/omniscale/go-mapnik
 sudo -u "$USER_NAME" go generate github.com/omniscale/go-mapnik
 sudo -u "$USER_NAME" go install github.com/omniscale/go-mapnik
-sudo -u "$USER_NAME" go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
-sudo -u "$USER_NAME" go build github.com/golang/protobuf/proto
-sudo -u "$USER_NAME" go install github.com/golang/protobuf/proto
 sudo -u "$USER_NAME" go get -d github.com/terranodo/tegola
-sudo -u "$USER_NAME" go build src/github.com/terranodo/tegola/cmd/tegola/main.go
 sudo -u "$USER_NAME" go install github.com/terranodo/tegola/cmd/tegola/
 
 apt-get remove libmapnik-dev
