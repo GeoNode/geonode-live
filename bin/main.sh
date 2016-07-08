@@ -856,12 +856,14 @@ chown -R $USER_NAME.$USER_NAME "$USER_HOME/Desktop/Geospatial/geonode-admin.desk
 
 #############################################################################
 do_hr
-echo "Installing Tegola"
+echo "Installing Eventkit/Tegola"
 do_hr
 #############################################################################
 cd "$USER_HOME"
 
-
+# From requirements.txt
+apt-get install --yes python-gunicorn python-eventlet python-rtree python-imposm \
+    python-decorator python-click python-webtest python-numpy python-backports.ssl-match-hostname
 
 
 
