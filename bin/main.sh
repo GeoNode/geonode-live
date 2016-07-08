@@ -342,7 +342,7 @@ echo "#DEBUG The locale settings updated:"
 locale
 echo "------------------------------------"
 
-apt-get install --yes postgresql-"$PG_VERSION" pgadmin3
+apt-get install --yes postgresql-"$PG_VERSION" pgadmin3 postgresql-contrib
 
 ### config ###
 cp "$BUILD_DIR"/../conf/postgresql/pg_hba.conf /etc/postgresql/"$PG_VERSION"/main/pg_hba.conf
@@ -861,9 +861,48 @@ do_hr
 #############################################################################
 cd "$USER_HOME"
 
-# From requirements.txt
+# Bring in proper Debian packages required from requirements.txt
 apt-get install --yes python-gunicorn python-eventlet python-rtree python-imposm \
     python-decorator python-click python-webtest python-numpy python-backports.ssl-match-hostname
+
+wget https://github.com/terranodo/eventkit/raw/master/requirements.txt
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -r requirements.txt
+rm requirements.txt
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install django-tastypie==0.12.2
+
+apt-get install --yes supervisor curl
+
+# Adding more BONN OSM data...
+# cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
+# sudo -u "$USER_NAME" make clean all NAME=bonn URL=https://s3.amazonaws.com/metro-extracts.mapzen.com/bonn_germany.osm.pbf
+
+mkdir -p "$USER_HOME"/config
+mkdir -p "$USER_HOME"/config/mapproxy/apps
+cd "$USER_HOME"/config/mapproxy
+wget http://download.omniscale.de/magnacarto/rel/dev-20160406-012a66a/magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
+tar -xzvf magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
+mv magnacarto-dev-20160406-012a66a-linux-amd64 magnacarto
+rm magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
+
+apt-get install --yes golang libmapnik-dev
+
+cd "$USER_HOME"/config
+export GOROOT=/usr/lib/go
+echo "GOROOT=/usr/lib/go" >> /etc/profile.d/path.sh
+export GOPATH=/home/user/config
+echo "GOPATH=/home/user/config" >> /etc/profile.d/path.sh
+sudo -u "$USER_NAME" go get -d github.com/omniscale/go-mapnik
+sudo -u "$USER_NAME" go generate github.com/omniscale/go-mapnik
+sudo -u "$USER_NAME" go install github.com/omniscale/go-mapnik
+sudo -u "$USER_NAME" go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+sudo -u "$USER_NAME" go build github.com/golang/protobuf/proto
+sudo -u "$USER_NAME" go install github.com/golang/protobuf/proto
+sudo -u "$USER_NAME" go get -d github.com/terranodo/tegola
+sudo -u "$USER_NAME" go build src/github.com/terranodo/tegola/cmd/tegola/main.go
+sudo -u "$USER_NAME" go install github.com/terranodo/tegola/cmd/tegola/
+
+apt-get remove libmapnik-dev
+apt-get autoremove
 
 
 
