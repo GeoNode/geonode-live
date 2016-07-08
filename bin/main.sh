@@ -897,8 +897,8 @@ sudo -u "$USER_NAME" go install github.com/omniscale/go-mapnik
 sudo -u "$USER_NAME" go get -d github.com/terranodo/tegola
 sudo -u "$USER_NAME" go install github.com/terranodo/tegola/cmd/tegola/
 
-apt-get remove libmapnik-dev
-apt-get autoremove
+apt-get remove --yes libmapnik-dev
+apt-get autoremove --yes
 
 
 
