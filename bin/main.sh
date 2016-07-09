@@ -1061,18 +1061,20 @@ cd "$BUILD_DIR"
 
 DATA_FOLDER="/usr/local/share/data"
 NE2_DATA_FOLDER="$DATA_FOLDER/natural_earth2"
+mkdir -p "$NE2_DATA_FOLDER"
 cd /tmp
 wget -c --progress=dot:mega http://download.osgeo.org/livedvd/data/natural_earth2/all_10m_20.tgz
 tar xzf all_10m_20.tgz
 for tDir in ne_10m_*; do
-   mv "$tDir"/* "$NE2_DATA_FOLDER"
+   mv "$tDir"/* "$NE2_DATA_FOLDER"/
 done
+rm all_10m_20.tgz
 
 wget -c --progress=dot:mega \
    "http://download.osgeo.org/livedvd/data/natural_earth2/HYP_50M_SR_W_reduced.zip"
 unzip HYP_50M_SR_W_reduced.zip
 rm HYP_50M_SR_W_reduced.zip
-mv HYP_* "$NE2_DATA_FOLDER"
+mv HYP_* "$NE2_DATA_FOLDER"/
 
 # Adding more BONN OSM data...
 # cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
