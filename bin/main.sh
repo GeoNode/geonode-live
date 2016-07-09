@@ -444,7 +444,92 @@ do_hr
 #############################################################################
 cd "$BUILD_DIR"
 
+MAPSERVER_DATA="/usr/local/share/mapserver"
+MS_APACHE_CONF_FILE="mapserver.conf"
+APACHE_CONF_DIR="/etc/apache2/conf-available/"
+APACHE_CONF_ENABLED_DIR="/etc/apache2/conf-enabled/"
+MS_APACHE_CONF=$APACHE_CONF_DIR$MS_APACHE_CONF_FILE
+
 apt-get install --yes cgi-mapserver mapserver-bin python-mapscript
+
+cd /tmp
+wget -c --progress=dot:mega \
+   "http://download.osgeo.org/livedvd/data/mapserver/mapserver-itasca-ms70.zip"
+
+# Install demos
+if [ ! -d "$MAPSERVER_DATA" ] ; then
+    mkdir -p "$MAPSERVER_DATA"/demos
+
+    echo -n "Done\nExtracting MapServer itasca demo in $MAPSERVER_DATA/demos/..."
+    unzip -q "/tmp/mapserver-itasca-ms70.zip" -d "$MAPSERVER_DATA"/demos/
+    echo "Done"
+
+    mv "$MAPSERVER_DATA/demos/mapserver-demo-master" "$MAPSERVER_DATA/demos/itasca"
+    rm -rf "$MAPSERVER_DATA/demos/ms4w"
+
+    echo -n "Patching itasca.map to enable WMS..."
+    rm "$MAPSERVER_DATA"/demos/itasca/itasca.map
+    wget -c --progress=dot:mega \
+        "https://github.com/mapserver/mapserver-demo/raw/master/itasca.map" \
+        -O "$MAPSERVER_DATA"/demos/itasca/itasca.map
+    echo -n "Done"
+
+    echo "Configuring the system...."
+    # Itasca Demo hacks
+    mkdir -p /usr/local/www/docs_maps/
+    ln -s "$MAPSERVER_DATA"/demos/itasca "$MAPSERVER_DATA"/demos/workshop
+    ln -s /usr/local/share/mapserver/demos /usr/local/www/docs_maps/mapserver_demos
+    ln -s /tmp /usr/local/www/docs_maps/tmp
+    ln -s /tmp /var/www/html/tmp
+fi
+
+# Add MapServer apache configuration
+cat << EOF > "$MS_APACHE_CONF"
+EnableSendfile off
+DirectoryIndex index.phtml
+Alias /mapserver "/usr/local/share/mapserver"
+Alias /ms_tmp "/tmp"
+Alias /tmp "/tmp"
+Alias /mapserver_demos "/usr/local/share/mapserver/demos"
+
+<Directory "/usr/local/share/mapserver">
+  Require all granted
+  Options +Indexes
+</Directory>
+
+<Directory "/usr/local/share/mapserver/demos">
+  Require all granted
+  Options +Indexes
+</Directory>
+
+<Directory "/tmp">
+  Require all granted
+  Options +Indexes
+</Directory>
+EOF
+
+a2enconf $MS_APACHE_CONF_FILE
+echo "Finished configuring Apache"
+
+cat << EOF > "/usr/share/applications/mapserver.desktop"
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Mapserver
+Comment=Mapserver
+Categories=Application;Geography;Geoscience;Education;
+Exec=firefox http://localhost:81/mapserver_demos/itasca/
+Icon=gnome-globe
+Terminal=false
+StartupNotify=false
+EOF
+
+cp /usr/share/applications/mapserver.desktop "$USER_HOME/Desktop/Geospatial/"
+chown "$USER_NAME.$USER_NAME" "$USER_HOME/Desktop/Geospatial/mapserver.desktop"
+
+# share data with the rest of the disc
+ln -s /usr/local/share/mapserver/demos/itasca/data \
+      /usr/local/share/data/itasca
 
 service apache2 --full-restart
 
@@ -503,6 +588,8 @@ rm -f /usr/local/share/data/vector/world_merc
 ln -s /usr/local/share/mapnik/demo \
       /usr/local/share/data/vector/world_merc
 
+
+
 #############################################################################
 do_hr
 echo "Installing QGIS"
@@ -554,6 +641,60 @@ cp /usr/share/applications/qgis.desktop "$USER_HOME/Desktop/Geospatial/"
 cp /usr/share/applications/qbrowser.desktop "$USER_HOME/Desktop/Geospatial/"
 chown -R $USER_NAME.$USER_NAME "$USER_HOME/Desktop/Geospatial/qgis.desktop"
 chown -R $USER_NAME.$USER_NAME "$USER_HOME/Desktop/Geospatial/qbrowser.desktop"
+
+mkdir -p /usr/local/share/qgis
+cp "$BUILD_DIR/../conf/qgis/QGIS-Itasca-Example.qgs" /usr/local/share/qgis/
+cp "$BUILD_DIR/../conf/qgis/QGIS-NaturalEarth-Example.qgs" /usr/local/share/qgis/
+chmod 664 /usr/local/share/qgis/*.qgs
+chgrp users /usr/local/share/qgis/*.qgs
+
+
+
+#############################################################################
+do_hr
+echo "Installing QGIS Server"
+do_hr
+#############################################################################
+cd "$BUILD_DIR"
+
+## get qgis_mapserver
+apt-get install --assume-yes qgis-server libapache2-mod-fcgid
+
+# Make sure Apache has cgi-bin setup, and that fcgid is enabled
+a2enmod cgi
+a2enmod fcgid
+
+cp "$BUILD_DIR"/../conf/qgis-server/qgis-fcgid.conf /etc/apache2/conf-available/
+a2enconf qgis-fcgid.conf
+
+#Sample project
+ln -s /usr/local/share/qgis/QGIS-Itasca-Example.qgs /usr/lib/cgi-bin/
+
+QGIS_SERVER_PKG_DATA=/usr/local/share/qgis_mapserver
+mkdir -p "$QGIS_SERVER_PKG_DATA"
+cd "$QGIS_SERVER_PKG_DATA"
+cp "$BUILD_DIR"/../conf/qgis-server/mapviewer.html .
+tar xzf "$BUILD_DIR"/../conf/qgis-server/mapfish-client-libs.tgz --no-same-owner
+
+# Create Desktop Shortcut for Demo viewer
+cat << EOF > /usr/share/applications/qgis-mapserver.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=QGIS Server
+Comment=QGIS Server
+Categories=Application;Geography;Geoscience;Education;
+Exec=firefox $QGIS_SERVER_PKG_DATA/mapviewer.html
+Icon=gnome-globe
+Terminal=false
+StartupNotify=false
+EOF
+
+cp -a /usr/share/applications/qgis-mapserver.desktop "$USER_HOME/Desktop/Geospatial/"
+chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/qgis-mapserver.desktop"
+
+# Reload Apache
+service apache2 --full-restart
 
 
 
@@ -877,10 +1018,6 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install --up
 
 apt-get install --yes supervisor curl
 
-# Adding more BONN OSM data...
-# cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
-# sudo -u "$USER_NAME" make clean all NAME=bonn URL=https://s3.amazonaws.com/metro-extracts.mapzen.com/bonn_germany.osm.pbf
-
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/config
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/config/mapproxy/apps
 cd "$USER_HOME"/config/mapproxy
@@ -912,6 +1049,34 @@ cp "$BUILD_DIR"/../conf/mapproxy/mapproxy.yaml /home/user/config/mapproxy/apps/m
 
 cp "$BUILD_DIR"/../conf/supervisor/eventkit.conf /etc/supervisor/conf.d/
 systemctl enable supervisor.service
+
+
+
+#############################################################################
+do_hr
+echo "Installing Data"
+do_hr
+#############################################################################
+cd "$BUILD_DIR"
+
+DATA_FOLDER="/usr/local/share/data"
+NE2_DATA_FOLDER="$DATA_FOLDER/natural_earth2"
+cd /tmp
+wget -c --progress=dot:mega http://download.osgeo.org/livedvd/data/natural_earth2/all_10m_20.tgz
+tar xzf all_10m_20.tgz
+for tDir in ne_10m_*; do
+   mv "$tDir"/* "$NE2_DATA_FOLDER"
+done
+
+wget -c --progress=dot:mega \
+   "http://download.osgeo.org/livedvd/data/natural_earth2/HYP_50M_SR_W_reduced.zip"
+unzip HYP_50M_SR_W_reduced.zip
+rm HYP_50M_SR_W_reduced.zip
+mv HYP_* "$NE2_DATA_FOLDER"
+
+# Adding more BONN OSM data...
+# cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
+# sudo -u "$USER_NAME" make clean all NAME=bonn URL=https://s3.amazonaws.com/metro-extracts.mapzen.com/bonn_germany.osm.pbf
 
 
 
