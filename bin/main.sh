@@ -307,6 +307,7 @@ service tomcat8 stop
 
 # Assign 1GB of RAM to default tomcat
 sed -i -e 's/-Xmx128m/-Xmx1024m/' /etc/default/tomcat8
+sed -i -e 's/port="8080"/port="8081"/' /etc/tomcat8/server.xml
 
 
 
@@ -656,7 +657,7 @@ if [ ! -e /usr/local/bin/geoserver_start.sh ] ; then
         (sleep 2; echo "25"; sleep 2; echo "50"; sleep 2; echo "75"; sleep 2; echo "100") \
      | zenity --progress --auto-close --text "GeoServer starting"
     fi
-    firefox "http://localhost:8080/geoserver/"
+    firefox "http://localhost:8081/geoserver/"
 EOF
 fi
 
@@ -719,7 +720,7 @@ Encoding=UTF-8
 Name=GeoServer Admin
 Comment=GeoServer
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "http://localhost:8080/geoserver/"
+Exec=firefox "http://localhost:8081/geoserver/"
 Icon=/usr/share/icons/geoserver_48x48.logo.png
 Terminal=false
 EOF

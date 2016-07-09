@@ -26,7 +26,7 @@ DATABASES = {
 OGC_SERVER = {
     'default' : {
         'BACKEND' : 'geonode.geoserver',
-        'LOCATION' : 'http://localhost:8080/geoserver/',
+        'LOCATION' : 'http://localhost:8081/geoserver/',
         'PUBLIC_LOCATION' : 'http://localhost/geoserver/',
         'USER' : 'admin',
         'PASSWORD' : 'geoserver',
