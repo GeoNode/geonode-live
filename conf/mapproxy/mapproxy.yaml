@@ -56,7 +56,7 @@ sources:
     wms_opts:
       featureinfo: true
     req:
-      url: http://localhost:8082/geoserver/wms?
+      url: http://localhost:8081/geoserver/wms?
       layers: 'topp:states'
       transparent: true
     coverage:
@@ -65,7 +65,7 @@ sources:
 
   tilestache:
     type: tile
-    url: http://127.0.0.1:8012/example/%(z)d/%(x)d/%(y)d.png
+    url: http://localhost:8012/example/%(z)d/%(x)d/%(y)d.png
     grid: global_mercator_inverse
     transparent: true
 
@@ -78,7 +78,7 @@ sources:
     type: wms
     supported_srs: ['epsg:26915']
     req:
-      url: http://localhost/cgi-bin/mapserv?
+      url: http://localhost:81/cgi-bin/mapserv?
       layers: airports,cities,lakespy2,dlgstln2,roads,twprgpy3
       map: /usr/local/www/docs_maps/mapserver_demos/workshop/itasca.map
     coverage:
