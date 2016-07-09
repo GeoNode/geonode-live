@@ -864,13 +864,15 @@ do_hr
 cd "$USER_HOME"
 
 # Bring in proper Debian packages required from requirements.txt
-apt-get install --yes python-gunicorn python-eventlet python-rtree python-imposm \
+apt-get install --yes python-gunicorn gunicorn python-eventlet python-rtree python-imposm \
     python-decorator python-click python-webtest python-numpy python-backports.ssl-match-hostname
 
 wget https://github.com/terranodo/eventkit/raw/master/requirements.txt
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -r requirements.txt
 rm requirements.txt
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install django-tastypie==0.12.2
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install --upgrade gunicorn
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install --upgrade eventlet
 
 apt-get install --yes supervisor curl
 
