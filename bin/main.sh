@@ -878,13 +878,13 @@ apt-get install --yes supervisor curl
 # cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
 # sudo -u "$USER_NAME" make clean all NAME=bonn URL=https://s3.amazonaws.com/metro-extracts.mapzen.com/bonn_germany.osm.pbf
 
-mkdir -p "$USER_HOME"/config
-mkdir -p "$USER_HOME"/config/mapproxy/apps
+sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/config
+sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/config/mapproxy/apps
 cd "$USER_HOME"/config/mapproxy
-wget http://download.omniscale.de/magnacarto/rel/dev-20160406-012a66a/magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
-tar -xzvf magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
-mv magnacarto-dev-20160406-012a66a-linux-amd64 magnacarto
-rm magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
+sudo -u "$USER_NAME" wget http://download.omniscale.de/magnacarto/rel/dev-20160406-012a66a/magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
+sudo -u "$USER_NAME" tar -xzvf magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
+sudo -u "$USER_NAME" mv magnacarto-dev-20160406-012a66a-linux-amd64 magnacarto
+sudo -u "$USER_NAME" rm magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
 
 apt-get install --yes golang libmapnik-dev
 
