@@ -893,11 +893,11 @@ export GOROOT=/usr/lib/go
 echo "GOROOT=/usr/lib/go" >> /etc/profile.d/path.sh
 export GOPATH=/home/user/config
 echo "GOPATH=/home/user/config" >> /etc/profile.d/path.sh
-sudo -u "$USER_NAME" go get -d github.com/omniscale/go-mapnik
-sudo -u "$USER_NAME" go generate github.com/omniscale/go-mapnik
-sudo -u "$USER_NAME" go install github.com/omniscale/go-mapnik
-sudo -u "$USER_NAME" go get -d github.com/terranodo/tegola
-sudo -u "$USER_NAME" go install github.com/terranodo/tegola/cmd/tegola/
+sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go get -d github.com/omniscale/go-mapnik
+sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go generate github.com/omniscale/go-mapnik
+sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/omniscale/go-mapnik
+sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go get -d github.com/terranodo/tegola
+sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/terranodo/tegola/cmd/tegola/
 
 apt-get remove --yes libmapnik-dev
 apt-get autoremove --yes
