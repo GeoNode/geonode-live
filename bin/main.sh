@@ -905,6 +905,8 @@ apt-get autoremove --yes
 echo "from mapproxy.multiapp import make_wsgi_app
 application = make_wsgi_app('/home/user/config/mapproxy/apps', allow_listing=True)" > "$USER_HOME"/.virtualenvs/geonode_live/src/mapproxy/mapproxy/wsgi.py
 
+cp "$BUILD_DIR"/../conf/mapproxy/mapproxy.yaml /home/user/config/mapproxy/apps/mapproxy.yaml
+
 cp "$BUILD_DIR"/../conf/supervisor/eventkit.conf /etc/supervisor/conf.d/
 systemctl enable supervisor.service
 
