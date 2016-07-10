@@ -85,6 +85,7 @@ apt-get -q update
 # Add ppas
 if [ "$BUILD_MODE" = "release" ] ; then
    cp ../sources.list.d/osgeolive.list /etc/apt/sources.list.d/
+   #cp ../sources.list.d/osgeolive-nightly.list /etc/apt/sources.list.d/
 else
    cp ../sources.list.d/osgeolive-nightly.list /etc/apt/sources.list.d/
 fi
@@ -1109,8 +1110,8 @@ rm HYP_50M_SR_W_reduced.zip
 mv HYP_* "$NE2_DATA_FOLDER"/
 
 # Adding more BONN OSM data...
-# cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
-# sudo -u "$USER_NAME" make clean all NAME=bonn URL=https://s3.amazonaws.com/metro-extracts.mapzen.com/bonn_germany.osm.pbf
+cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
+sudo -u "$USER_NAME" make clean all NAME=bonn URL=https://s3.amazonaws.com/metro-extracts.mapzen.com/bonn_germany.osm.pbf
 
 
 
