@@ -791,7 +791,8 @@ wget -c --progress=dot:mega \
    "http://build.geonode.org/geoserver/latest/geoserver.war"
 
 service tomcat8 start
-sleep 30
+sleep 40
+service tomcat8 stop
 
 # # Add GeoNode plugins
 # cd /tmp
@@ -1274,7 +1275,7 @@ fi
 # Start tomcat to ensure all applications are deployed
 #service tomcat8 start
 #sleep 60
-service tomcat8 stop
+#service tomcat8 stop
 
 # Disable auto-deploy to prevent applications to get removed after removing war files
 # TODO: Add some note to wiki for users that want to deploy their own tomcat applications
