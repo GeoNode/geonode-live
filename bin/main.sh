@@ -557,23 +557,23 @@ mkdir -p "$MAPNIK_DATA"/demo/
 cp demo/* "$MAPNIK_DATA"/demo/
 rm -rf demo
 
-# Create startup script for TileStache Mapnik Server
-cat << EOF > "/usr/local/bin/mapnik_start_tilestache.sh"
-#!/bin/sh
-tilestache-server -c /usr/local/share/mapnik/demo/tilestache.cfg -p 8012
-EOF
+# # Create startup script for TileStache Mapnik Server
+# cat << EOF > "/usr/local/bin/mapnik_start_tilestache.sh"
+# #!/bin/sh
+# tilestache-server -c /usr/local/share/mapnik/demo/tilestache.cfg -p 8012
+# EOF
 
-chmod 755 "/usr/local/bin/mapnik_start_tilestache.sh"
+# chmod 755 "/usr/local/bin/mapnik_start_tilestache.sh"
 
 ## Create Desktop Shortcut for starting Tilestache Server in shell
 cat << EOF > /usr/share/applications/mapnik-start.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Mapnik & TileStache Start
+Name=Mapnik & TileStache Demo
 Comment=Mapnik tile-serving using TileStache Server
 Categories=Application;Geography;Geoscience;Education;
-Exec=mapnik_start_tilestache.sh
+Exec=firefox "http://localhost/tilestache/example/0/0/0.png"
 Icon=gnome-globe
 Terminal=true
 StartupNotify=false
@@ -681,7 +681,7 @@ cat << EOF > /usr/share/applications/qgis-mapserver.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=QGIS Server
+Name=QGIS Server Demo
 Comment=QGIS Server
 Categories=Application;Geography;Geoscience;Education;
 Exec=firefox $QGIS_SERVER_PKG_DATA/mapviewer.html
@@ -692,6 +692,22 @@ EOF
 
 cp -a /usr/share/applications/qgis-mapserver.desktop "$USER_HOME/Desktop/Geospatial/"
 chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/qgis-mapserver.desktop"
+
+cat << EOF > /usr/share/applications/qgis-mapserver-wms.desktop
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=QGIS Server WMS
+Comment=QGIS Server
+Categories=Application;Geography;Geoscience;Education;
+Exec=firefox "http://localhost/qgis/QGIS-NaturalEarth-Example?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
+Icon=gnome-globe
+Terminal=false
+StartupNotify=false
+EOF
+
+cp -a /usr/share/applications/qgis-mapserver-wms.desktop "$USER_HOME/Desktop/Geospatial/"
+chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/qgis-mapserver-wms.desktop"
 
 # Reload Apache
 service apache2 --full-restart
@@ -710,30 +726,30 @@ mkdir -p $MAPPROXY_DIR
 
 apt-get install --yes python-mapproxy
 
-# Create startup script for MapProxy Server
-cat << EOF > /usr/local/bin/mapproxy_start.sh
-#!/bin/sh
-mapproxy-util serve-develop -b 0.0.0.0:8011 /usr/local/share/mapproxy/mapproxy.yaml
-EOF
+# # Create startup script for MapProxy Server
+# cat << EOF > /usr/local/bin/mapproxy_start.sh
+# #!/bin/sh
+# mapproxy-util serve-develop -b 0.0.0.0:8011 /usr/local/share/mapproxy/mapproxy.yaml
+# EOF
 
-chmod 755 /usr/local/bin/mapproxy_start.sh
+# chmod 755 /usr/local/bin/mapproxy_start.sh
 
-## Create Desktop Shortcut for starting MapProxy Server in shell
-cat << EOF > /usr/share/applications/mapproxy-start.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=MapProxy Start
-Comment=MapProxy
-Categories=Application;Geography;Geoscience;Education;
-Exec=lxterminal -e mapproxy_start.sh
-Icon=gnome-globe
-Terminal=false
-StartupNotify=false
-EOF
+# ## Create Desktop Shortcut for starting MapProxy Server in shell
+# cat << EOF > /usr/share/applications/mapproxy-start.desktop
+# [Desktop Entry]
+# Type=Application
+# Encoding=UTF-8
+# Name=MapProxy Start
+# Comment=MapProxy
+# Categories=Application;Geography;Geoscience;Education;
+# Exec=lxterminal -e mapproxy_start.sh
+# Icon=gnome-globe
+# Terminal=false
+# StartupNotify=false
+# EOF
 
-cp -a /usr/share/applications/mapproxy-start.desktop "$USER_HOME/Desktop/Geospatial/"
-chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/mapproxy-start.desktop"
+# cp -a /usr/share/applications/mapproxy-start.desktop "$USER_HOME/Desktop/Geospatial/"
+# chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/mapproxy-start.desktop"
 
 cat << EOF > /usr/share/applications/mapproxy-demo.desktop
 [Desktop Entry]
@@ -742,7 +758,7 @@ Encoding=UTF-8
 Name=MapProxy demo
 Comment=MapProxy
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "http://localhost:8011/demo/"
+Exec=firefox "http://localhost:8083/mapproxy/demo/"
 Icon=gnome-globe
 Terminal=false
 EOF
