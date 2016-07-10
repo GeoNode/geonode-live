@@ -570,7 +570,7 @@ cat << EOF > /usr/share/applications/mapnik-start.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Mapnik & TileStache Demo
+Name=TileStache Demo
 Comment=Mapnik tile-serving using TileStache Server
 Categories=Application;Geography;Geoscience;Education;
 Exec=firefox "http://localhost/tilestache/example/0/0/0.png"
@@ -755,7 +755,7 @@ cat << EOF > /usr/share/applications/mapproxy-demo.desktop
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=MapProxy demo
+Name=MapProxy Demo
 Comment=MapProxy
 Categories=Application;Geography;Geoscience;Education;
 Exec=firefox "http://localhost:8083/mapproxy/demo/"
