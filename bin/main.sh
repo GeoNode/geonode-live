@@ -378,7 +378,7 @@ do_hr
 #############################################################################
 cd "$BUILD_DIR"
 
-apt-get install --yes postgis "postgresql-$PG_VERSION-postgis-2.2"
+apt-get install --yes postgis postgis-gui "postgresql-$PG_VERSION-postgis-2.2"
 
 #enable gdal drivers
 cat << EOF >> "/var/lib/postgresql/$PG_VERSION/main/postgresql.auto.conf"
