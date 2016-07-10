@@ -388,20 +388,20 @@ postgis.enable_outdb_rasters = TRUE
 
 EOF
 
-#shp2pgsql-gui desktop launcher
-cat << EOF > /usr/share/applications/shp2pgsql-gui.desktop
-[Desktop Entry]
-Type=Application
-Name=shp2pgsql
-Comment=Shapefile to PostGIS Import Tool
-Categories=Application;Geography;Geoscience;Education;
-Exec=shp2pgsql-gui
-Icon=pgadmin3
-Terminal=false
-EOF
+# #shp2pgsql-gui desktop launcher
+# cat << EOF > /usr/share/applications/shp2pgsql-gui.desktop
+# [Desktop Entry]
+# Type=Application
+# Name=shp2pgsql
+# Comment=Shapefile to PostGIS Import Tool
+# Categories=Application;Geography;Geoscience;Education;
+# Exec=shp2pgsql-gui
+# Icon=pgadmin3
+# Terminal=false
+# EOF
 
-cp -a /usr/share/applications/shp2pgsql-gui.desktop "$USER_HOME/Desktop/Geospatial/"
-chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/Geospatial/shp2pgsql-gui.desktop"
+# cp -a /usr/share/applications/shp2pgsql-gui.desktop "$USER_HOME/Desktop/Geospatial/"
+# chown -R "$USER_NAME":"$USER_NAME" "$USER_HOME/Desktop/Geospatial/shp2pgsql-gui.desktop"
 
 
 
