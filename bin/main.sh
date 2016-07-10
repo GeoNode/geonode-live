@@ -515,10 +515,10 @@ cat << EOF > "/usr/share/applications/mapserver.desktop"
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Mapserver
+Name=Mapserver WMS
 Comment=Mapserver
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox http://localhost:81/mapserver_demos/itasca/
+Exec=firefox "http://localhost/mapserver?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities"
 Icon=gnome-globe
 Terminal=false
 StartupNotify=false
@@ -1054,6 +1054,22 @@ sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go generate github.com/omniscale/go-ma
 sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/omniscale/go-mapnik
 sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go get -d github.com/terranodo/tegola
 sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/terranodo/tegola/cmd/tegola/
+
+cat << EOF > "/usr/share/applications/tegola.desktop"
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Tegola Demo
+Comment=Tegola
+Categories=Application;Geography;Geoscience;Education;
+Exec=firefox "file:///home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html"
+Icon=gnome-globe
+Terminal=false
+StartupNotify=false
+EOF
+
+cp /usr/share/applications/tegola.desktop "$USER_HOME/Desktop/Geospatial/"
+chown "$USER_NAME.$USER_NAME" "$USER_HOME/Desktop/Geospatial/tegola.desktop"
 
 apt-get remove --yes libmapnik-dev
 apt-get autoremove --yes
