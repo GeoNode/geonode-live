@@ -759,7 +759,7 @@ Encoding=UTF-8
 Name=MapProxy Demo
 Comment=MapProxy
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "http://localhost:8083/mapproxy/demo/"
+Exec=firefox "http://localhost/mapproxy/mapproxy/demo/"
 Icon=gnome-globe
 Terminal=false
 EOF
