@@ -816,7 +816,7 @@ if [ ! -e /usr/local/bin/geoserver_start.sh ] ; then
         (sleep 2; echo "25"; sleep 2; echo "50"; sleep 2; echo "75"; sleep 2; echo "100") \
      | zenity --progress --auto-close --text "GeoServer starting"
     fi
-    firefox "http://localhost:8081/geoserver/"
+    firefox "http://localhost/geoserver/"
 EOF
 fi
 
@@ -879,7 +879,7 @@ Encoding=UTF-8
 Name=GeoServer Admin
 Comment=GeoServer
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "http://localhost:8081/geoserver/"
+Exec=firefox "http://localhost/geoserver/"
 Icon=/usr/share/icons/geoserver_48x48.logo.png
 Terminal=false
 EOF
