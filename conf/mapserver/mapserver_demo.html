@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <title>Full Screen Example</title>        
+        <link rel="stylesheet" href="/javascript/openlayers/theme/default/style.css" type="text/css">
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <style type="text/css">
+            html, body, #map {
+                margin: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            #text {
+                position: absolute;
+                bottom: 1em;
+                left: 1em;
+                width: 512px;
+                z-index: 20000;
+                background-color: white;
+                padding: 0 0.5em 0.5em 0.5em;
+            }
+        </style>
+        <script src="/javascript/openlayers/OpenLayers.js"></script>
+    </head>
+    <body>
+        <div id="map"></div>
+
+        <div id="text">
+            <h1 id="title">MapServer WMS Demo</h1>
+            <script src="fullScreen.js"></script>
+        </div>
+    </body>
+</html>
