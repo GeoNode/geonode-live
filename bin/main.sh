@@ -565,7 +565,7 @@ cd "$BUILD_DIR"
 MAPNIK_DATA="/usr/local/share/mapnik"
 
 apt-get install --yes libmapnik3.0 mapnik-utils python-mapnik \
-      python-werkzeug tilestache python-modestmaps
+      python-werkzeug tilestache python-modestmaps libjs-modestmaps
 
 cd /tmp
 # download Tilestache demo
@@ -585,6 +585,9 @@ rm -rf demo
 
 # chmod 755 "/usr/local/bin/mapnik_start_tilestache.sh"
 
+mkdir -p /var/www/html/demo/tilestache
+cp "$BUILD_DIR"/../conf/tilestache/index.html /var/www/html/demo/tilestache/
+
 ## Create Desktop Shortcut for starting Tilestache Server in shell
 cat << EOF > /usr/share/applications/mapnik-start.desktop
 [Desktop Entry]
@@ -593,9 +596,9 @@ Encoding=UTF-8
 Name=TileStache Demo
 Comment=Mapnik tile-serving using TileStache Server
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "http://localhost/tilestache/example/0/0/0.png"
+Exec=firefox "http://localhost/demo/tilestache/"
 Icon=gnome-globe
-Terminal=true
+Terminal=false
 StartupNotify=false
 EOF
 
