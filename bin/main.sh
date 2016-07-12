@@ -496,6 +496,7 @@ if [ ! -d "$MAPSERVER_DATA" ] ; then
 fi
 
 # Copy Mapserver demo files
+mkdir -p /var/www/html/demo/mapserver
 cp "$BUILD_DIR"/../conf/mapserver/* /var/www/html/demo/mapserver/
 mv /var/www/html/demo/mapserver/mapserver_demo.html /var/www/html/demo/mapserver/index.html
 
@@ -695,6 +696,10 @@ cd "$QGIS_SERVER_PKG_DATA"
 cp "$BUILD_DIR"/../conf/qgis-server/mapviewer.html .
 tar xzf "$BUILD_DIR"/../conf/qgis-server/mapfish-client-libs.tgz --no-same-owner
 
+# Create link to www folder
+ln -s /usr/local/share/qgis_mapserver /var/www/html/demo/qgis-server
+ln -s /usr/local/share/qgis_mapserver/mapviewer.html /usr/local/share/qgis_mapserver/index.html
+
 # Create Desktop Shortcut for Demo viewer
 cat << EOF > /usr/share/applications/qgis-mapserver.desktop
 [Desktop Entry]
@@ -703,7 +708,7 @@ Encoding=UTF-8
 Name=QGIS Server Demo
 Comment=QGIS Server
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox $QGIS_SERVER_PKG_DATA/mapviewer.html
+Exec=firefox "http://localhost/demo/qgis-server/"
 Icon=gnome-globe
 Terminal=false
 StartupNotify=false
@@ -712,21 +717,21 @@ EOF
 cp -a /usr/share/applications/qgis-mapserver.desktop "$USER_HOME/Desktop/Geospatial/"
 chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/qgis-mapserver.desktop"
 
-cat << EOF > /usr/share/applications/qgis-mapserver-wms.desktop
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=QGIS Server WMS
-Comment=QGIS Server
-Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "http://localhost/qgis/QGIS-NaturalEarth-Example?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
-Icon=gnome-globe
-Terminal=false
-StartupNotify=false
-EOF
+# cat << EOF > /usr/share/applications/qgis-mapserver-wms.desktop
+# [Desktop Entry]
+# Type=Application
+# Encoding=UTF-8
+# Name=QGIS Server WMS
+# Comment=QGIS Server
+# Categories=Application;Geography;Geoscience;Education;
+# Exec=firefox "http://localhost/qgis/QGIS-NaturalEarth-Example?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities"
+# Icon=gnome-globe
+# Terminal=false
+# StartupNotify=false
+# EOF
 
-cp -a /usr/share/applications/qgis-mapserver-wms.desktop "$USER_HOME/Desktop/Geospatial/"
-chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/qgis-mapserver-wms.desktop"
+# cp -a /usr/share/applications/qgis-mapserver-wms.desktop "$USER_HOME/Desktop/Geospatial/"
+# chown -R $USER_NAME:$USER_NAME "$USER_HOME/Desktop/Geospatial/qgis-mapserver-wms.desktop"
 
 # Reload Apache
 service apache2 --full-restart
