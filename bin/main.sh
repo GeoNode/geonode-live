@@ -1080,6 +1080,9 @@ sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/omniscale/go-map
 sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go get -d github.com/terranodo/tegola
 sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/terranodo/tegola/cmd/tegola/
 
+ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static /var/www/html/demo/tegola
+ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/index.html
+
 cat << EOF > "/usr/share/applications/tegola.desktop"
 [Desktop Entry]
 Type=Application
@@ -1087,7 +1090,7 @@ Encoding=UTF-8
 Name=Tegola Demo
 Comment=Tegola
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "file:///home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html"
+Exec=firefox "http://localhost/demo/tegola/"
 Icon=gnome-globe
 Terminal=false
 StartupNotify=false
