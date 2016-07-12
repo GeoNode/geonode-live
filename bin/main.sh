@@ -944,6 +944,7 @@ sudo -u "$USER_NAME" sed -i -e '25,28d' "$USER_HOME"/geonode_live/setup.py
 cd "$USER_HOME"/geonode_live
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+https://github.com/terranodo/django-mapproxy.git
 
 echo "Creating www folders..."
 mkdir -p /var/www/geonode_live/static
