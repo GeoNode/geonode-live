@@ -922,7 +922,8 @@ do_hr
 #############################################################################
 cd "$USER_HOME"
 
-sudo -u "$USER_NAME" git clone https://github.com/GeoNode/GeoNode.git geonode
+#sudo -u "$USER_NAME" git clone https://github.com/GeoNode/GeoNode.git geonode
+sudo -u "$USER_NAME" git clone -b djmp https://github.com/terranodo/geonode.git geonode
 
 echo "Creating Virtualenv..."
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs
