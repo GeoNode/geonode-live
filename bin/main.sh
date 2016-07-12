@@ -495,6 +495,13 @@ if [ ! -d "$MAPSERVER_DATA" ] ; then
     ln -s /tmp /var/www/html/tmp
 fi
 
+# Copy Mapserver demo files
+cp "$BUILD_DIR"/../conf/mapserver/* /var/www/html/demo/mapserver/
+mv /var/www/html/demo/mapserver/mapserver_demo.html /var/www/html/demo/mapserver/index.html
+
+# Add 4326 to WMS Capabilities
+sed -i -e 's/WMS_SRS "EPSG:26915"/WMS_SRS "EPSG:26915 EPSG:4326"/' /usr/local/www/docs_maps/mapserver_demos/workshop/itasca.map
+
 # Add MapServer apache configuration
 cat << EOF > "$MS_APACHE_CONF"
 EnableSendfile off
@@ -530,7 +537,7 @@ Encoding=UTF-8
 Name=Mapserver WMS
 Comment=Mapserver
 Categories=Application;Geography;Geoscience;Education;
-Exec=firefox "http://localhost/mapserver?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities"
+Exec=firefox "http://localhost/demo/mapserver/"
 Icon=gnome-globe
 Terminal=false
 StartupNotify=false
