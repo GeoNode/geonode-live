@@ -535,7 +535,7 @@ cat << EOF > "/usr/share/applications/mapserver.desktop"
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=Mapserver WMS
+Name=MapServer Demo
 Comment=Mapserver
 Categories=Application;Geography;Geoscience;Education;
 Exec=firefox "http://localhost/demo/mapserver/"
