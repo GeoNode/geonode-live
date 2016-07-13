@@ -1145,6 +1145,22 @@ mv HYP_* "$NE2_DATA_FOLDER"/
 # cd "$USER_HOME"/.virtualenvs/geonode_live/src/osm-extract/
 # sudo -u "$USER_NAME" make clean all NAME=bonn URL=https://s3.amazonaws.com/metro-extracts.mapzen.com/bonn_germany.osm.pbf
 
+# Adding pre-generated BONN OSM data to save build time
+sudo -u $USER_NAME createdb -E UTF8 bonn_osm
+sudo -u $USER_NAME psql bonn_osm -c 'create extension postgis;'
+sudo -u $USER_NAME psql bonn_osm -c 'create extension hstore;'
+cd /tmp
+wget -c --progress=dot:mega \
+   "http://aiolos.survey.ntua.gr/gisvm/dev/bonn_osm.tar.gz"
+tar zxf bonn_osm.tar.gz
+rm bonn_osm.tar.gz
+cd bonn_osm
+for LAYER in *.sql ; do
+   sudo -u $USER_NAME psql bonn_osm -f "$LAYER" &> /dev/null
+done
+cd ..
+rm -rf bonn_osm
+
 
 
 #############################################################################
