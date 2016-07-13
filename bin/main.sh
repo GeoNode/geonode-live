@@ -671,6 +671,10 @@ cp "$BUILD_DIR/../conf/qgis/QGIS-NaturalEarth-Example.qgs" /usr/local/share/qgis
 chmod 664 /usr/local/share/qgis/*.qgs
 chgrp users /usr/local/share/qgis/*.qgs
 
+# Load default settings
+mkdir -p "$USER_HOME"/.config/QGIS
+cp "$BUILD_DIR/../conf/qgis/QGIS2.conf" "$USER_HOME"/.config/QGIS/
+
 
 
 #############################################################################
