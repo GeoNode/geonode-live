@@ -1155,9 +1155,9 @@ sudo -u $USER_NAME psql bonn_osm -c 'create extension postgis;'
 sudo -u $USER_NAME psql bonn_osm -c 'create extension hstore;'
 cd /tmp
 wget -c --progress=dot:mega \
-   "http://aiolos.survey.ntua.gr/gisvm/dev/bonn_osm.shp.tar.gz"
-tar zxf bonn_osm.shp.tar.gz
-rm bonn_osm.shp.tar.gz
+   "http://aiolos.survey.ntua.gr/gisvm/dev/bonn_osm.sql.tar.gz"
+tar zxf bonn_osm.sql.tar.gz
+rm bonn_osm.sql.tar.gz
 sudo -u $USER_NAME psql bonn_osm < bonn_osm.dump
 
 
