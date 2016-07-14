@@ -1160,6 +1160,9 @@ tar zxf bonn_osm.sql.tar.gz
 rm bonn_osm.sql.tar.gz
 sudo -u $USER_NAME psql bonn_osm < bonn_osm.dump
 
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE all_roads_mercator AS SELECT ST_Transform(wkb_geometry,3857) AS wkb_geometry FROM all_roads;'
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE buildings_mercator AS SELECT ST_Transform(wkb_geometry,3857) AS wkb_geometry FROM buildings;'
+
 
 
 #############################################################################
