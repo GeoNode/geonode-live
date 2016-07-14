@@ -1089,6 +1089,10 @@ sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/omniscale/go-map
 sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go get -d github.com/terranodo/tegola
 sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/terranodo/tegola/cmd/tegola/
 
+cp "$BUILD_DIR"/../conf/tegola/config.toml "$USER_HOME"/config/bin/
+rm /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html
+cp "$BUILD_DIR"/../conf/tegola/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/
+
 ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static /var/www/html/demo/tegola
 ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/index.html
 
@@ -1160,8 +1164,9 @@ tar zxf bonn_osm.sql.tar.gz
 rm bonn_osm.sql.tar.gz
 sudo -u $USER_NAME psql bonn_osm < bonn_osm.dump
 
-sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE all_roads_mercator AS SELECT ST_Transform(wkb_geometry,3857) AS wkb_geometry FROM all_roads;'
-sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE buildings_mercator AS SELECT ST_Transform(wkb_geometry,3857) AS wkb_geometry FROM buildings;'
+# Tegola needs a 3857 layer...
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE buildings_mercator AS SELECT * FROM buildings;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE buildings_mercator ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
 
 
 

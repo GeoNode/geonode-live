@@ -1,0 +1,23 @@
+[webserver]
+port = ":8080"
+
+# register data providers
+[[providers]]
+name = "test_postgis"
+type = "postgis"
+host = "localhost"
+port = 5432
+database = "bonn_osm" 
+user = "user"
+password = "user"
+
+# maps are made up of layers
+[[maps]]
+name = "zoning"					# used in the URL to reference this map
+
+	[[maps.layers]]
+	name = "landuse" 			# will be encoded as the layer name in the tile
+	provider = "test_postgis"	# must match a data provider
+	minzoom = 12
+	maxzoom = 16
+	sql = "SELECT ST_AsBinary(wkb_geometry) AS wkb_geometry, name, ogc_fid FROM buildings_mercator WHERE wkb_geometry && {{.BBox}}"
