@@ -631,9 +631,9 @@ apt-get --assume-yes install python-psycopg2 \
 # Install selected plugins
 cd /tmp
 wget -c --progress=dot:mega \
-   "http://download.osgeo.org/livedvd/data/qgis/python-qgis-osgeolive_9.5-1_all.deb"
-dpkg -i python-qgis-osgeolive_9.5-1_all.deb
-rm -rf python-qgis-osgeolive_9.5-1_all.deb
+   "http://download.osgeo.org/livedvd/data/qgis/python-qgis-osgeolive_10.0-1_all.deb"
+dpkg -i python-qgis-osgeolive_10.0-1_all.deb
+rm -rf python-qgis-osgeolive_10.0-1_all.deb
 
 #Make sure old qt uim isn't installed
 apt-get --assume-yes remove uim-qt uim-qt3
