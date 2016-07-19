@@ -1092,6 +1092,7 @@ sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/terranodo/tegola
 cp "$BUILD_DIR"/../conf/tegola/config.toml "$USER_HOME"/config/bin/
 rm /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html
 cp "$BUILD_DIR"/../conf/tegola/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/
+cp "$BUILD_DIR"/../conf/tegola/style.js /home/user/config/src/github.com/terranodo/tegola/cmd/static/js/style.js
 
 ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static /var/www/html/demo/tegola
 ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/index.html
@@ -1164,9 +1165,46 @@ tar zxf bonn_osm.sql.tar.gz
 rm bonn_osm.sql.tar.gz
 sudo -u $USER_NAME psql bonn_osm < bonn_osm.dump
 
-# Tegola needs a 3857 layer...
-sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE buildings_mercator AS SELECT * FROM buildings;'
-sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE buildings_mercator ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+# Tegola needs 3857 layers...
+#FIXME: Use a fancy loop :)
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE buildings_3857 AS SELECT * FROM buildings;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE buildings_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE all_roads_3857 AS SELECT * FROM all_roads;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE all_roads_3857 ALTER COLUMN wkb_geometry TYPE Geometry(LineString, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE rivers_3857 AS SELECT * FROM rivers;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE rivers_3857 ALTER COLUMN wkb_geometry TYPE Geometry(LineString, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE main_roads_3857 AS SELECT * FROM main_roads;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE main_roads_3857 ALTER COLUMN wkb_geometry TYPE Geometry(LineString, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE farms_3857 AS SELECT * FROM farms;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE farms_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE aerodromes_polygon_3857 AS SELECT * FROM aerodromes_polygon;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE aerodromes_polygon_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE forest_3857 AS SELECT * FROM forest;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE forest_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE grassland_3857 AS SELECT * FROM grassland;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE grassland_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE lakes_3857 AS SELECT * FROM lakes;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE lakes_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE medical_polygon_3857 AS SELECT * FROM medical_polygon;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE medical_polygon_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE military_3857 AS SELECT * FROM military;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE military_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE residential_3857 AS SELECT * FROM residential;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE residential_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
+
+sudo -u $USER_NAME psql bonn_osm -c 'CREATE TABLE schools_polygon_3857 AS SELECT * FROM schools_polygon;'
+sudo -u $USER_NAME psql bonn_osm -c 'ALTER TABLE schools_polygon_3857 ALTER COLUMN wkb_geometry TYPE Geometry(MultiPolygon, 3857) USING ST_Transform(wkb_geometry, 3857);'
 
 
 
