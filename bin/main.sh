@@ -956,6 +956,8 @@ mkdir -p /var/www/geonode_live/uploaded/layers
 mkdir -p /var/www/geonode_live/uploaded/thumbs
 chown -R www-data:www-data /var/www/geonode_live
 chmod -R 777 /var/www/geonode_live
+mkdir -p "$USER_HOME"/geonode_live/cache
+chmod -R 777 "$USER_HOME"/geonode_live/cache
 
 echo "Creating GeoNode databases..."
 sudo -u $USER_NAME createdb -E UTF8 geonode_live_app
