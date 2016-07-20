@@ -1092,7 +1092,7 @@ sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/terranodo/tegola
 cp "$BUILD_DIR"/../conf/tegola/config.toml "$USER_HOME"/config/bin/
 rm /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html
 cp "$BUILD_DIR"/../conf/tegola/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/
-cp "$BUILD_DIR"/../conf/tegola/style.js /home/user/config/src/github.com/terranodo/tegola/cmd/static/js/style.js
+cp "$BUILD_DIR"/../conf/tegola/style.js /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/js/style.js
 
 ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static /var/www/html/demo/tegola
 ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/index.html
