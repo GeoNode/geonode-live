@@ -53,8 +53,6 @@ CATALOGUE = {
 MEDIA_ROOT = "/var/www/geonode_live/uploaded"
 STATIC_ROOT = "/var/www/geonode_live/static"
 
-INSTALLED_APPS += ("osgeo_importer",)
-
 OSGEO_DATASTORE = 'geonode_live'
 OSGEO_IMPORTER_GEONODE_ENABLED = True
 #LOGGING['loggers']['osgeo_importer'] = {"handlers": ["console"], "level": "DEBUG"}

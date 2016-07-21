@@ -939,7 +939,8 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install Djan
 echo "Creating GeoNode template project..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py startproject geonode_live --template=https://github.com/GeoNode/geonode-project/archive/master.zip -epy,rst,yml -n Vagrantfile
 cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/geonode_live/geonode_live/
-cp "$BUILD_DIR"/../conf/geonode/url.py "$USER_HOME"/geonode_live/geonode_live/
+cp "$BUILD_DIR"/../conf/geonode/urls.py "$USER_HOME"/geonode_live/geonode_live/
+echo 'INSTALLED_APPS += ("osgeo_importer",)' >> "$USER_HOME"/geonode_live/geonode_live/settings.py
 
 echo "Installing GeoNode..."
 cd "$USER_HOME"/geonode
