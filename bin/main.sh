@@ -1010,9 +1010,17 @@ echo "Installing fixures..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py loaddata fixtures.json
 
+echo "Starting GeoServer..."
+service tomcat8 start
+sleep 30
+
 echo "Creating DB store..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/create_db_store.py "$USER_HOME"/geonode_live/
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python create_db_store.py
+
+echo "Stoping GeoServer..."
+service tomcat8 stop
+sleep 5
 
 echo "Configuring uWSGI..."
 cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/geonode_live.ini
