@@ -1069,6 +1069,7 @@ apt-get install --yes python-gunicorn gunicorn python-eventlet python-rtree pyth
     python-decorator python-click python-webtest python-numpy python-backports.ssl-match-hostname
 
 wget https://github.com/terranodo/eventkit/raw/master/requirements.txt
+sudo -u "$USER_NAME" sed -i -e '15d' requirements.txt
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -r requirements.txt
 rm requirements.txt
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install django-tastypie==0.12.2
