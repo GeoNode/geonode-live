@@ -96,7 +96,7 @@ else
 fi
 
 #volume name, max 11 chars:
-IMAGE_NAME=GEONODELIVE`echo "$VERSION" | sed -e 's/\.//' -e 's/rc.*//'`
+IMAGE_NAME=GEONODELIVE
 
 echo
 echo "==============================================================="
@@ -124,7 +124,7 @@ cd ~/livecdtmp
 
 UBU_MIRROR="http://cdimage.ubuntu.com"
 UBU_RELEASE="16.04"
-ISO_RELEASE="16.04"
+ISO_RELEASE="16.04.1"
 UBU_ISO="lubuntu-${ISO_RELEASE}-desktop-$ARCH.iso"
 wget -c --progress=dot:mega \
    "$UBU_MIRROR/lubuntu/releases/$UBU_RELEASE/release/$UBU_ISO"
@@ -188,7 +188,7 @@ echo "======================================"
 
 #Method 2 hardcode default kernel from Lubuntu
 #need to repack the initrd.lz to pick up the change to casper.conf and kernel update
-sudo chroot edit mkinitramfs -c lzma -o /initrd.lz 4.4.0-21-generic
+sudo chroot edit mkinitramfs -c lzma -o /initrd.lz 4.4.0-31-generic
 
 mkdir lzfiles
 cd lzfiles
@@ -208,14 +208,14 @@ chmod a+x scripts/casper-bottom/25adduser
 sed -i -e 's/U6aMy0wojraho/eLyJdzDtonrIc/g' scripts/casper-bottom/25adduser
 
 #Change the text on the loader
-sed -i -e "s/title=.ubuntu $UBU_RELEASE/title=GeoNode-Live $VERSION_MODE/g" \
+sed -i -e "s/title=.ubuntu ${UBU_RELEASE}/title=GeoNode-Live ${VERSION_MODE}/g" \
     usr/share/plymouth/themes/lubuntu-text/lubuntu-text.plymouth
 #might be in this file
 # sed -i -e "s/title=.ubuntu $UBU_RELEASE/title=GeoNode-Live $VERSION_MODE/g" \
 #     lib/plymouth/themes/text.plymouth
 
 #Optional change it in the .disk/info too
-sed -i -e "s/.ubuntu $UBU_RELEASE LTS \"Xenial Xerus\"/GeoNode-Live $VERSION_MODE/g" \
+sed -i -e "s/.ubuntu ${ISO_RELEASE} LTS \"Xenial Xerus\"/GeoNode-Live ${VERSION_MODE}/g" \
     ../extract-cd/.disk/info
 
 #copy in a different background
