@@ -972,16 +972,20 @@ sudo -u $USER_NAME psql geonode_live -c 'GRANT ALL ON spatial_ref_sys TO PUBLIC;
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
 cd "$USER_HOME"/geonode_live
 
+echo "Making migrations..."
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py makemigrations --noinput
+
 echo "Applying migrations..."
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate people
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate sites
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate auth
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate account
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate layers
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate documents
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate actstream
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate people
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate admin
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate guardian
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate sessions
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate auth
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate tastypie
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate maps
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate contenttypes
