@@ -1008,6 +1008,7 @@ echo "Installing fixures..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py loaddata fixtures.json
 
+echo "Creating anonymous user..."
 cat << EOF > create-anonymous.py
 from geonode.people.models import Profile
 Profile.objects.create(username="AnonymousUser")
