@@ -1008,6 +1008,14 @@ echo "Installing fixures..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py loaddata fixtures.json
 
+cat << EOF > create-anonymous.py
+from geonode.people.models import Profile
+Profile.objects.create(username="AnonymousUser")
+EOF
+
+sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py shell < create-anonymous.py
+rm create-anonymous.py
+
 echo "Starting GeoServer..."
 service tomcat8 start
 sleep 30
