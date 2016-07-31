@@ -1,6 +1,6 @@
 # geonode-live
 
-This section describes how to build GeoNode-Live as described in [official ubuntu wiki](https://help.ubuntu.com/community/LiveCDCustomization).
+This section describes how to build GeoNode-Live as described in [official ubuntu wiki](https://help.ubuntu.com/community/LiveCDCustomization). This document is based on the [OSGeo-Live build process](https://wiki.osgeo.org/wiki/Live_GIS_Build#Build_the_Live_DVD_ISO_image)
 
 All you need is a running Ubuntu/Xubuntu/Kubuntu/Lubuntu installation at the exact same version as the target live system (even within a virtual machine as long as it has ~20GB free disk space).
 
@@ -24,7 +24,7 @@ This will install Git and the install scripts, and create a link to them from yo
 
 After the completion of the above script the new iso file is located in ~/livecdtmp.
 
-## Repeating the process (Development mode).
+## Repeat the process (Development mode).
 
 In case you wish to rerun the build process, do not remove or move the lubuntu official iso located in this folder to skip downloading it again.
 The folder ~/geonode-live is a git clone of the original repository so you can commit, pull and push changes to it.
