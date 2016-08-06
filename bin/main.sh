@@ -1101,26 +1101,19 @@ sudo -u "$USER_NAME" tar -xzvf magnacarto-dev-20160406-012a66a-linux-amd64.tar.g
 sudo -u "$USER_NAME" mv magnacarto-dev-20160406-012a66a-linux-amd64 magnacarto
 sudo -u "$USER_NAME" rm magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
 
-apt-get install --yes golang libmapnik-dev
-
-cd "$USER_HOME"/config
-export GOROOT=/usr/lib/go
-echo "GOROOT=/usr/lib/go" >> /etc/profile.d/path.sh
-export GOPATH=/home/user/config
-echo "GOPATH=/home/user/config" >> /etc/profile.d/path.sh
-sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go get -d github.com/omniscale/go-mapnik
-sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go generate github.com/omniscale/go-mapnik
-sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/omniscale/go-mapnik
-sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go get -d github.com/terranodo/tegola
-sudo -u "$USER_NAME" env "GOPATH=$GOPATH" go install github.com/terranodo/tegola/cmd/tegola/
-
-cp "$BUILD_DIR"/../conf/tegola/config.toml "$USER_HOME"/config/bin/
-rm /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html
-cp "$BUILD_DIR"/../conf/tegola/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/
-cp "$BUILD_DIR"/../conf/tegola/style.js /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/js/style.js
-
-ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static /var/www/html/demo/tegola
-ln -s /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/open-layers-example.html /home/user/config/src/github.com/terranodo/tegola/cmd/tegola/static/index.html
+apt-get install --yes golang
+cd /usr/local/bin
+wget -c --progress=dot:mega \
+   -O tegola-v0.1.0-linux-amd64.zip \
+   "https://github.com/terranodo/tegola/releases/download/v0.1.0/tegola-v0.1.0-linux-amd64.zip"
+unzip tegola-v0.1.0-linux-amd64.zip
+rm tegola-v0.1.0-linux-amd64.zip
+rm config.toml
+cd "$USER_HOME"
+cp "$BUILD_DIR"/../conf/tegola/config.toml /usr/local/bin/
+mkdir -p /var/www/html/demo/tegola/js
+cp "$BUILD_DIR"/../conf/tegola/open-layers-example.html /var/www/html/demo/tegola/index.html
+cp "$BUILD_DIR"/../conf/tegola/style.js /var/www/html/demo/tegola/js/style.js
 
 cat << EOF > "/usr/share/applications/tegola.desktop"
 [Desktop Entry]
@@ -1138,7 +1131,7 @@ EOF
 cp /usr/share/applications/tegola.desktop "$USER_HOME/Desktop/Geospatial/"
 chown "$USER_NAME.$USER_NAME" "$USER_HOME/Desktop/Geospatial/tegola.desktop"
 
-apt-get remove --yes libmapnik-dev
+#apt-get remove --yes libmapnik-dev
 apt-get autoremove --yes
 
 echo "from mapproxy.multiapp import make_wsgi_app
