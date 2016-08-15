@@ -281,9 +281,9 @@ do_hr
 #############################################################################
 cd "$BUILD_DIR"
 
-apt-get install --yes uwsgi-emperor uwsgi-plugin-python
-
-service uwsgi-emperor stop
+apt-get install --yes uwsgi-core uwsgi-plugin-python
+#apt-get install --yes uwsgi-emperor uwsgi-plugin-python
+#service uwsgi-emperor stop
 
 
 #############################################################################
@@ -1036,8 +1036,8 @@ echo "Stoping GeoServer..."
 service tomcat8 stop
 sleep 5
 
-echo "Configuring uWSGI..."
-cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/geonode_live.ini
+#echo "Configuring uWSGI..."
+#cp "$BUILD_DIR"/../conf/uwsgi/vassals-default.skel /etc/uwsgi-emperor/vassals/geonode_live.ini
 #service uwsgi-emperor restart
 
 # Install desktop icon
@@ -1398,4 +1398,4 @@ rm -rf /etc/skel/geonode-live
 service postgresql stop
 service apache2 stop
 service nginx stop
-service uwsgi-emperor stop
+#service uwsgi-emperor stop
