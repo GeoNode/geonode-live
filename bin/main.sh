@@ -958,6 +958,7 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+https://github.com/ProminentEdge/django-osgeo-importer.git@master#egg=osgeo-importer
 
 echo "Creating www folders..."
+#TODO: Clean up not needed folders
 mkdir -p /var/www/geonode_live/static
 mkdir -p /var/www/geonode_live/uploaded/layers
 mkdir -p /var/www/geonode_live/uploaded/thumbs
