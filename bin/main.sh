@@ -1111,13 +1111,8 @@ sudo -u "$USER_NAME" rm magnacarto-dev-20160406-012a66a-linux-amd64.tar.gz
 apt-get install --yes golang
 cd /usr/local/bin
 wget -c --progress=dot:mega \
-   -O tegola-v0.1.0-linux-amd64.zip \
-   "http://aiolos.survey.ntua.gr/gisvm/dev/tegola.zip"
-   # "https://github.com/terranodo/tegola/releases/download/v0.1.0/tegola-v0.1.0-linux-amd64.zip"
-unzip tegola-v0.1.0-linux-amd64.zip
-rm tegola-v0.1.0-linux-amd64.zip
-rm config.toml
-mv tegola_linux tegola
+   -O tegola \
+   "https://github.com/terranodo/tegola/releases/download/v0.2.0/tegola_linux_amd64"
 cd "$USER_HOME"
 cp "$BUILD_DIR"/../conf/tegola/config.toml /usr/local/bin/
 mkdir -p /var/www/html/demo/tegola/js
