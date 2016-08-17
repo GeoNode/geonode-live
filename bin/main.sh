@@ -1113,6 +1113,7 @@ cd /usr/local/bin
 wget -c --progress=dot:mega \
    -O tegola \
    "https://github.com/terranodo/tegola/releases/download/v0.2.0/tegola_linux_amd64"
+chmod 755 tegola
 cd "$USER_HOME"
 cp "$BUILD_DIR"/../conf/tegola/config.toml /usr/local/bin/
 mkdir -p /var/www/html/demo/tegola/js
