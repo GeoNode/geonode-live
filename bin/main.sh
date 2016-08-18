@@ -322,6 +322,7 @@ wget -c --progress=dot:mega \
      "https://atom.io/download/deb" \
      -O /tmp/atom-amd64.deb
 cd /tmp/
+apt-get install --yes gvfs-bin
 dpkg -i /tmp/atom-amd64.deb
 
 
