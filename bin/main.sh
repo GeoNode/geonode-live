@@ -944,6 +944,9 @@ cd "$USER_HOME"
 #sudo -u "$USER_NAME" git clone https://github.com/GeoNode/GeoNode.git geonode
 sudo -u "$USER_NAME" git clone -b djmp https://github.com/terranodo/geonode.git geonode
 
+#Fixing CPU 100% issue with MapProxy pre-seeding all layers
+sudo -u "$USER_NAME" sed -i -e 's|USE_DJMP_FOR_GEONODE_LAYERS = True|USE_DJMP_FOR_GEONODE_LAYERS = False|' "$USER_HOME"/geonode/geonode/contrib/mp/settings.py
+
 echo "Creating Virtualenv..."
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs
 sudo -u "$USER_NAME" virtualenv --system-site-packages "$USER_HOME"/.virtualenvs/geonode_live
