@@ -1,4 +1,4 @@
-# geonode-live
+# GeoNode-Live (Ubuntu version)
 
 This section describes how to build GeoNode-Live as described in [official ubuntu wiki](https://help.ubuntu.com/community/LiveCDCustomization). This document is based on the [OSGeo-Live build process](https://wiki.osgeo.org/wiki/Live_GIS_Build#Build_the_Live_DVD_ISO_image)
 
@@ -33,3 +33,27 @@ The folder ~/geonode-live is a git clone of the original repository so you can c
 	host$ git pull origin master
 	host$ cd bin
 	host$ sudo ./build_chroot.sh amd64 nightly master terranodo 2>&1 | tee /var/log/chroot-build.log
+
+
+# GeoNode-Live (CentOS version)
+
+In order to build the CentOS version of GeoNode-Live you need a working CentOS 7 machine or VM to act as a build host.
+
+First you need to install epel:
+
+	sudo yum install epel-release git
+
+Then you need to install livecd tools:
+
+	sudo yum install livecd-tools
+
+Clone the git repository:
+
+	git clone https://github.com/terranodo/geonode-live.git
+	cd geonode-live
+
+And build the iso:
+
+	livecd-creator -c centos-7-livecd.cfg -f geonode-live --cache=/root/cache 2>&1 | tee /var/log/geonode-live/build.log
+
+The iso file will be available as geonode-live.iso at the end of the build process and the build logs will be available at /var/log/geonode-live/build.log
