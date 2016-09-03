@@ -960,7 +960,7 @@ cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/geonode_live/geon
 cp "$BUILD_DIR"/../conf/geonode/urls.py "$USER_HOME"/geonode_live/geonode_live/
 echo 'INSTALLED_APPS += ("osgeo_importer",)' >> "$USER_HOME"/geonode_live/geonode_live/settings.py
 echo "DJMP_AUTHORIZATION_CLASS = 'djmp.guardian_auth.GuardianAuthorization'" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
-echo "TILESET_CACHE_DIRECTORY = os.path.join(LOCAL_ROOT, 'cache/layers')" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
+echo "TILESET_CACHE_DIRECTORY = os.path.join(PROJECT_ROOT, 'cache/layers')" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
 echo "USE_DISK_CACHE=True" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
 echo "LAYER_PREVIEW_LIBRARY = 'geoext'" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
 
