@@ -977,15 +977,19 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+
 
 echo "Creating www folders..."
 #TODO: Clean up not needed folders
-mkdir -p /var/www/geonode_live/static
+#mkdir -p /var/www/geonode_live/static
 mkdir -p /var/www/geonode_live/uploaded/layers
 mkdir -p /var/www/geonode_live/uploaded/thumbs
 chown -R www-data:www-data /var/www/geonode_live
 chmod -R 777 /var/www/geonode_live
-mkdir -p "$USER_HOME"/geonode_live/cache
-chmod -R 777 "$USER_HOME"/geonode_live/cache
+#mkdir -p "$USER_HOME"/geonode_live/cache
+#chmod -R 777 "$USER_HOME"/geonode_live/cache
 mkdir -p "$USER_HOME"/geonode_live/geonode_live/cache/layers
 chown -R www-data:www-data "$USER_HOME"/geonode_live/geonode_live/cache
+#sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
+sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/geonode_live/geonode_live/static
+sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/geonode_live/geonode_live/static_root
+ln -s "$USER_HOME"/geonode_live/geonode_live/static_root /var/www/geonode_live/static
 
 echo "Creating GeoNode databases..."
 sudo -u $USER_NAME createdb -E UTF8 geonode_live_app
@@ -995,8 +999,6 @@ sudo -u $USER_NAME psql geonode_live -c 'create extension postgis;'
 sudo -u $USER_NAME psql geonode_live -c 'GRANT ALL ON geometry_columns TO PUBLIC;'
 sudo -u $USER_NAME psql geonode_live -c 'GRANT ALL ON spatial_ref_sys TO PUBLIC;'
 
-sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
-sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/geonode_live/geonode_live/static
 cd "$USER_HOME"/geonode_live
 
 echo "Making migrations..."
@@ -1029,6 +1031,7 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py
 
 echo "Collecting static files..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py collectstatic --noinput
+chown -R www-data:www-data "$USER_HOME"/geonode_live/geonode_live/static_root
 
 echo "Installing fixures..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
