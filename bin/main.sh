@@ -1142,6 +1142,8 @@ mkdir -p /var/www/html/demo/tegola/js
 cp "$BUILD_DIR"/../conf/tegola/open-layers-example.html /var/www/html/demo/tegola/index.html
 cp "$BUILD_DIR"/../conf/tegola/style.js /var/www/html/demo/tegola/js/style.js
 
+wget -q -O /usr/share/icons/tegola.png "https://github.com/terranodo/tegola-docs/raw/master/static/images/logo.png"
+
 cat << EOF > "/usr/share/applications/tegola.desktop"
 [Desktop Entry]
 Type=Application
@@ -1150,7 +1152,7 @@ Name=Tegola Demo
 Comment=Tegola
 Categories=Application;Geography;Geoscience;Education;
 Exec=firefox "http://localhost/demo/tegola/"
-Icon=gnome-globe
+Icon=/usr/share/icons/tegola.png
 Terminal=false
 StartupNotify=false
 EOF
