@@ -1,0 +1,142 @@
+PostgreSQLPath=/usr/bin
+EnterpriseDBPath=
+GreenplumDBPath=
+PostgreSQLHelpPath=http://www.postgresql.org/docs/current/static/
+EnterpriseDBHelpPath=http://www.enterprisedb.com/docs/en/current/server/
+GreenplumDBHelpPath=http://gpdb.docs.pivotal.io/
+SlonyHelpPath=http://www.slony.info/documentation/
+LastDatabase=postgres
+LastPort=5432
+LastSSL=-1
+LastUsername=postgres
+LogFile=/home/liveuser/pgadmin.log
+LogLevel=1
+AskSaveConfirmation=true
+ConfirmDelete=true
+ShowUsersForPrivileges=false
+AutoRowCount=2000
+IndentSpaces=0
+SpacesForTabs=false
+RefreshOnClick=0
+StickySql=false
+DecimalMark=
+ColumnNames=false
+DoubleClickProperties=false
+ShowNotices=false
+WriteUnicodeFile=true
+Font=
+DDFont=
+SuppressGuruHints=false
+SlonyPath=
+IgnoreVersion=false
+SystemSchemas=
+IdleProcessColour=rgb(95, 164, 217)
+ActiveProcessColour=rgb(95, 217, 95)
+SlowProcessColour=rgb(217, 167, 95)
+BlockedProcessColour=rgb(217, 110, 95)
+FavouritesFile=/home/liveuser/.pgadminfavourites
+MacrosFile=/home/liveuser/.pgadminmacros
+ExtFormatCmd=
+LanguageId=0
+OptionsLastTreeItem=Favourites
+[Hints]
+saving-passwords=Suppress
+[frmHint]
+Left=120
+Top=73
+Width=610
+Height=628
+[Updates]
+pgsql-Versions=9.5
+[Servers]
+Count=1
+[Servers/1]
+Server=localhost
+HostAddr=
+Description=localhost
+Service=
+ServiceID=
+DiscoveryID=
+Port=5432
+StorePwd=true
+Rolename=
+Restore=true
+Database=postgres
+Username=postgres
+LastDatabase=liveuser
+LastSchema=
+DbRestriction=
+Colour=white
+SSL=-1
+Group=Servers
+SSLCert=
+SSLKey=
+SSLRootCert=
+SSLCrl=
+SSLCompression=true
+SSHTunnel=false
+TunnelHost=
+TunnelUserName=
+TunnelModePwd=true
+PublicKeyFile=
+IdentityFile=
+TunnelPort=22
+[Servers/1/Databases]
+[Servers/1/Databases/bonn_osm]
+SchemaRestriction=
+[Servers/1/Databases/geonode]
+SchemaRestriction=
+[Servers/1/Databases/geonode_data]
+SchemaRestriction=
+[Servers/1/Databases/liveuser]
+SchemaRestriction=
+[Servers/1/Databases/postgres]
+SchemaRestriction=
+[Properties]
+[Properties/Server]
+Left=125
+Top=28
+Width=600
+Height=717
+[frmQuery]
+MaxRows=100
+MaxColSize=256
+IndicateNull=false
+ThousandsSeparator=
+AutoRollback=false
+AutoCommit=true
+Font=monospace 10
+[Copy]
+Quote=Strings
+QuoteChar="\""
+ColSeparator=;
+[History]
+MaxQueries=10
+MaxQuerySize=1024
+File=/home/liveuser/.pgadmin_histoqueries
+[Export]
+WriteBOM=true
+[ctlSQLBox]
+MarginBackgroundColour=rgb(221, 221, 221)
+ColourCaret=black
+Colour1=rgb(0, 127, 0)
+Colour2=rgb(0, 127, 0)
+Colour3=rgb(127, 127, 127)
+Colour4=rgb(0, 127, 127)
+Colour5=rgb(0, 0, 127)
+Colour6=rgb(127, 0, 127)
+Colour7=rgb(127, 0, 127)
+Colour10=black
+Colour11=black
+[frmOptions]
+Left=0
+Top=28
+Width=960
+Height=662
+[frmMain]
+Perspective-8418=layout2|name=objectBrowser;caption=Object browser;state=16795644;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=200;besth=450;minw=100;minh=200;maxw=-1;maxh=-1;floatx=236;floaty=222;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=586;besth=44;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|dock_size(3,0,0)=228|dock_size(1,10,0)=46|dock_size(4,1,0)=233|
+Left=50
+Top=50
+Width=750
+Height=550
+Maximized=false
