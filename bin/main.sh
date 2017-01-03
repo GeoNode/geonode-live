@@ -968,7 +968,7 @@ echo "Installing GeoNode..."
 cd "$USER_HOME"/geonode
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
-sudo -u "$USER_NAME" sed -i -e '25,28d' "$USER_HOME"/geonode_live/setup.py
+sudo -u "$USER_NAME" sed -i -e '25,27d' "$USER_HOME"/geonode_live/setup.py
 cd "$USER_HOME"/geonode_live
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
