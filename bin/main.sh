@@ -941,11 +941,11 @@ do_hr
 #############################################################################
 cd "$USER_HOME"
 
-#sudo -u "$USER_NAME" git clone https://github.com/GeoNode/GeoNode.git geonode
-sudo -u "$USER_NAME" git clone -b djmp https://github.com/terranodo/geonode.git geonode
+sudo -u "$USER_NAME" git clone https://github.com/GeoNode/geonode.git
+#sudo -u "$USER_NAME" git clone -b djmp https://github.com/terranodo/geonode.git geonode
 
 #Fixing CPU 100% issue with MapProxy pre-seeding all layers
-sudo -u "$USER_NAME" sed -i -e 's|USE_DJMP_FOR_GEONODE_LAYERS = True|USE_DJMP_FOR_GEONODE_LAYERS = False|' "$USER_HOME"/geonode/geonode/contrib/mp/settings.py
+#sudo -u "$USER_NAME" sed -i -e 's|USE_DJMP_FOR_GEONODE_LAYERS = True|USE_DJMP_FOR_GEONODE_LAYERS = False|' "$USER_HOME"/geonode/geonode/contrib/mp/settings.py
 
 echo "Creating Virtualenv..."
 sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs
@@ -957,12 +957,12 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install Djan
 echo "Creating GeoNode template project..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/django-admin.py startproject geonode_live --template=https://github.com/GeoNode/geonode-project/archive/master.zip -epy,rst,yml -n Vagrantfile
 cp "$BUILD_DIR"/../conf/geonode/local_settings.py "$USER_HOME"/geonode_live/geonode_live/
-cp "$BUILD_DIR"/../conf/geonode/urls.py "$USER_HOME"/geonode_live/geonode_live/
-echo 'INSTALLED_APPS += ("osgeo_importer",)' >> "$USER_HOME"/geonode_live/geonode_live/settings.py
-echo "DJMP_AUTHORIZATION_CLASS = 'djmp.guardian_auth.GuardianAuthorization'" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
-echo "TILESET_CACHE_DIRECTORY = os.path.join(PROJECT_ROOT, 'cache/layers')" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
-echo "USE_DISK_CACHE=True" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
-echo "LAYER_PREVIEW_LIBRARY = 'geoext'" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
+#cp "$BUILD_DIR"/../conf/geonode/urls.py "$USER_HOME"/geonode_live/geonode_live/
+#echo 'INSTALLED_APPS += ("osgeo_importer",)' >> "$USER_HOME"/geonode_live/geonode_live/settings.py
+#echo "DJMP_AUTHORIZATION_CLASS = 'djmp.guardian_auth.GuardianAuthorization'" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
+#echo "TILESET_CACHE_DIRECTORY = os.path.join(PROJECT_ROOT, 'cache/layers')" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
+#echo "USE_DISK_CACHE=True" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
+#echo "LAYER_PREVIEW_LIBRARY = 'geoext'" >> "$USER_HOME"/geonode_live/geonode_live/settings.py
 
 echo "Installing GeoNode..."
 cd "$USER_HOME"/geonode
@@ -972,28 +972,31 @@ sudo -u "$USER_NAME" sed -i -e '25,28d' "$USER_HOME"/geonode_live/setup.py
 cd "$USER_HOME"/geonode_live
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install -e .
 cd ..
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+https://github.com/terranodo/django-mapproxy.git
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+https://github.com/ProminentEdge/django-osgeo-importer.git@master#egg=osgeo-importer
+#sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+https://github.com/terranodo/django-mapproxy.git
+#sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/pip install git+https://github.com/ProminentEdge/django-osgeo-importer.git@master#egg=osgeo-importer
 
 echo "Creating www folders..."
 #TODO: Clean up not needed folders
-#mkdir -p /var/www/geonode_live/static
+mkdir -p /var/www/geonode_live/static
 mkdir -p /var/www/geonode_live/uploaded/layers
 mkdir -p /var/www/geonode_live/uploaded/thumbs
+mkdir -p /var/www/geonode_live/uploaded/avatars
 chown -R www-data:www-data /var/www/geonode_live
-chmod -R 777 /var/www/geonode_live
+chmod -R 775 /var/www/geonode_live
 #mkdir -p "$USER_HOME"/geonode_live/cache
 #chmod -R 777 "$USER_HOME"/geonode_live/cache
-mkdir -p "$USER_HOME"/geonode_live/geonode_live/cache/layers
-chown -R www-data:www-data "$USER_HOME"/geonode_live/geonode_live/cache
+#mkdir -p "$USER_HOME"/geonode_live/geonode_live/cache/layers
+#chown -R www-data:www-data "$USER_HOME"/geonode_live/geonode_live/cache
 #sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/.virtualenvs/geonode_live/local/lib/python2.7/site-packages/geonode/static
-sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/geonode_live/geonode_live/static
-sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/geonode_live/geonode_live/static_root
-ln -s "$USER_HOME"/geonode_live/geonode_live/static_root /var/www/geonode_live/static
+#sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/geonode_live/geonode_live/static
+#sudo -u "$USER_NAME" mkdir -p "$USER_HOME"/geonode_live/geonode_live/static_root
+#ln -s "$USER_HOME"/geonode_live/geonode_live/static_root /var/www/geonode_live/static
 
 echo "Creating GeoNode databases..."
 sudo -u $USER_NAME createdb -E UTF8 geonode_live_app
 sudo -u $USER_NAME psql geonode_live_app -c 'create extension postgis;'
+sudo -u $USER_NAME psql geonode_live_app -c 'GRANT ALL ON geometry_columns TO PUBLIC;'
+sudo -u $USER_NAME psql geonode_live_app -c 'GRANT ALL ON spatial_ref_sys TO PUBLIC;'
 sudo -u $USER_NAME createdb -E UTF8 geonode_live
 sudo -u $USER_NAME psql geonode_live -c 'create extension postgis;'
 sudo -u $USER_NAME psql geonode_live -c 'GRANT ALL ON geometry_columns TO PUBLIC;'
@@ -1004,11 +1007,11 @@ cd "$USER_HOME"/geonode_live
 echo "Making migrations..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py makemigrations --noinput
 
-echo "Applying migrations..."
+#echo "Applying migrations..."
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate people
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate sites
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate auth
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate account
+#sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate account
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate layers
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate documents
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate actstream
@@ -1024,14 +1027,14 @@ sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate services
 # sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate taggit
 
-echo "Migrate..."
-sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate --noinput
+#echo "Migrate..."
+#sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py migrate --noinput
 echo "Sync database..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py syncdb --noinput
 
 echo "Collecting static files..."
 sudo -u "$USER_NAME" "$USER_HOME"/.virtualenvs/geonode_live/bin/python manage.py collectstatic --noinput
-chown -R www-data:www-data "$USER_HOME"/geonode_live/geonode_live/static_root
+#chown -R www-data:www-data "$USER_HOME"/geonode_live/geonode_live/static_root
 
 echo "Installing fixures..."
 sudo -u "$USER_NAME" cp "$BUILD_DIR"/../conf/geonode/fixtures.json "$USER_HOME"/geonode_live/
